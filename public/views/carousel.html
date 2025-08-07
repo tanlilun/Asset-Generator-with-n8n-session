@@ -292,8 +292,7 @@
     inactivityTimer = setTimeout(() => {
       console.log('User inactive. Clearing data...');
       clearData();
-    // }, 15 * 60 * 1000);
-    },  15 * 1000);
+    }, 15 * 60 * 1000);
   }
 
   ['mousemove', 'keydown', 'scroll', 'touchstart'].forEach(event => {
