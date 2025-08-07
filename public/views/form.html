@@ -121,13 +121,11 @@
         body: JSON.stringify(payload)
       });
 
-      window.location.href = '/views/carousel.html';
-
-      // if (response.ok) {
-      //   window.location.href = '/views/carousel.html'; // Make sure this file exists in public/views/
-      // } else {
-      //   alert('Something went wrong.');
-      // }
+      if (response.ok) {
+        window.location.href = '/views/carousel.html'; // Make sure this file exists in public/views/
+      } else {
+        alert('Something went wrong.');
+      }
     });
   </script>
 </body>
