@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>n8nui Demo - Caption</title>
+  <style>
+    .s3-container {
+            display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 20px;
+        max-width: 1400px;
+        margin: 0 auto;
+    }
+    .s3-header {
+            display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        /* margin-bottom: 8px; */
+        font-size: 18px;
+        margin: 10px auto;
+        padding: 8px 16px;
+        background-color: white;
+        color: black;
+        text-align: center;
+        text-decoration: none;
+        border-radius: 6px;
+        font-weight: bold;
+        width: fit-content;
+    }
+
+    .s3-section {
+        background: white;
+        padding: 24px;
+        border-radius: 8px;
+        box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+        margin-bottom: 30px auto; /* Centers the div horizontally */
+        max-width: 800px;   /* Adjust the max width as needed */
+    }
+
+    video {
+        width: 100%;
+        height: auto;
+    }
+
+    .slide-inner {
+        max-width: 768px;
+        margin: 0 auto;
+        padding: 0 40px; /* left and right margin on all screen sizes */
+        width: 100%;
+        text-align: center; /* or use flexbox if needed */
+    }
+
+    .loader-wrapper {
+        display: flex;
+        justify-content: center;
+    }
+    .loader {
+        border: 8px solid #f3f3f3;
+        border-top: 8px solid #007bff;
+        border-radius: 50%;
+        width: 60px;
+        height: 60px;
+        animation: spin 1s linear infinite;
+    }
+    @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+    }
+    .message {
+        text-align: center;
+        font-size: 18px;
+        margin-bottom: 30px;
+    }
+    .hidden {
+        display: none;
+    }
+  </style>
+</head>
+<body>
+    <div class="s3-container">
+        <h3 class="s3-header">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="black" stroke-width="2" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="12" cy="12" r="10" />
+                <polygon points="10,8 16,12 10,16" fill="#1877F2" stroke="none" />
+            </svg>
+            Short Video for Social Post
+        </h3>
+        <div class="slide-inner">
+            <div class="s3-section">
+                <div id="video-section" class="hidden">
+                </div>
+                <div id="video-loading-section">
+                    <div class="loader-wrapper">
+                        <div class="loader"></div>
+                    </div>
+                    <div class="message">Loading Short Video... Please Wait!</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script type="module">
+
+        const videoSection = document.getElementById('video-section');
+        const videoLoadingSection = document.getElementById('video-loading-section');
+
+        const loaded = {
+            videos: false
+        };
+
+        async function pollStatus() {
+            let needsRetry = false;
+
+            const requests = [];
+
+            if (!loaded.videos) requests.push(fetch('/api/videos'));
+
+            const responses = await Promise.all(requests);
+            const data = await Promise.all(responses.map(res => res.json()));
+
+            let i = 0;
+
+            if (!loaded.videos) {
+                const data1 = data[i++];
+                if (data1.length > 0) {
+                    const video = data1[0];
+                    videoSection.innerHTML = `
+                        <video autoplay loop muted playsinline width="100%" height="100%">
+                        <source src="${video.video_url}" type="video/mp4">
+                        Your browser does not support the video tag.
+                        </video>
+                    `;
+                    videoSection.classList.remove('hidden');
+                    videoLoadingSection.classList.add('hidden');
+                    loaded.videos = true;
+                } else {
+                needsRetry = true;
+                }
+            }
+            
+            if (needsRetry) {
+                setTimeout(pollStatus, 2000);
+            }
+        }
+
+        pollStatus();
+
+    </script>
+</body>
+</html>

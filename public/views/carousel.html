@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Manual Full Page Carousel</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html, body {
+      height: auto;
+      overflow-x: hidden;
+    }
+
+    .carousel {
+      position: relative;
+      overflow: hidden;
+      width: 100%;
+      height: 100vh;
+    }
+
+    .slides {
+      display: flex;
+      width: 100%;
+      height: 100%;
+      transition: transform 0.6s ease-in-out;
+    }
+
+    .slide {
+      flex: 1 0 100%;
+      height: 100%;
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background-size: cover;
+      background-position: center;
+    }
+
+    .slide1 { background-color: #1e3a8a; }
+    .slide2 { background-color: #059669; }
+    .slide3 { background-color: #b91c1c; }
+    .slide4 { background-color: #FFE8CD; }
+
+    .slide2 {
+      align-items: flex-start;
+      justify-content: center;
+      overflow-y: auto; /* Enables scrolling */
+      height: 100vh;
+      padding: 20px 0px; /* Optional: adds space around content */
+    }
+    
+    .slide-content {
+      background-color: rgba(255,255,255,0.9);
+      padding: 40px 60px;
+      border-radius: 16px;
+      text-align: center;
+      cursor: pointer;
+      transition: transform 0.2s ease;
+      text-decoration: none;
+      color: #111;
+    }
+
+    .slide-content:hover {
+      transform: scale(1.05);
+    }
+
+    .slide-content h2 {
+      font-size: 2.5rem;
+      margin-bottom: 10px;
+    }
+
+    .slide-content p {
+      font-size: 1.1rem;
+      color: #333;
+    }
+
+    .nav-arrow {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      background-color: rgba(0,0,0,0.5);
+      border: none;
+      color: white;
+      font-size: 2rem;
+      padding: 0.5rem 1rem;
+      cursor: pointer;
+      z-index: 10;
+    }
+
+    .nav-arrow:hover {
+      background-color: rgba(0,0,0,0.8);
+    }
+
+    .prev { left: 10px; }
+    .next { right: 10px; }
+
+    .indicators {
+      position: absolute;
+      bottom: 20px;
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+    }
+
+    .indicator {
+      width: 12px;
+      height: 12px;
+      background-color: rgba(255, 255, 255, 0.6);
+      border-radius: 50%;
+      cursor: pointer;
+    }
+
+    .indicator.active {
+      background-color: white;
+    }
+
+    @media (max-width: 768px) {
+      .slide-content {
+        padding: 30px 20px;
+      }
+
+      .slide-content h2 {
+        font-size: 1.8rem;
+      }
+
+      .slide-content p {
+        font-size: 1rem;
+      }
+
+      .nav-arrow {
+        font-size: 1.5rem;
+      }
+    }
+
+    @media (max-width: 1280px) {
+      html, body {
+        height: auto;
+        overflow-x: hidden;
+        overflow-y: auto;
+      }
+
+      .carousel {
+        height: auto;
+      }
+
+      .slide {
+        height: auto;
+        flex: 1 0 100%;
+      }
+
+      .slides {
+        height: auto;
+      }
+    }
+
+  </style>
+</head>
+<body>
+
+<div class="carousel">
+  <div class="slides" id="slideContainer">
+    <div class="slide slide1" id="slide1"></div>
+    <div class="slide slide2" id="slide2"></div>
+    <div class="slide slide3" id="slide3"></div>
+    <div class="slide slide4" id="slide4"></div>
+  </div>
+
+  <button class="nav-arrow prev" onclick="prevSlide()">&#10094;</button>
+  <button class="nav-arrow next" onclick="nextSlide()">&#10095;</button>
+
+  <div class="indicators" id="indicators">
+    <div class="indicator active" onclick="goToSlide(0)"></div>
+    <div class="indicator" onclick="goToSlide(1)"></div>
+    <div class="indicator" onclick="goToSlide(2)"></div>
+    <div class="indicator" onclick="goToSlide(3)"></div>
+  </div>
+</div>
+
+<script>
+  let currentSlide = 0;
+  const slides = document.getElementById('slideContainer');
+  const indicators = document.querySelectorAll('.indicator');
+  const slideFiles = ['slide1.html', 'slide2.html', 'slide3.html', 'slide4.html'];
+
+  function updateSlidePosition() {
+    slides.style.transform = `translateX(-${currentSlide * 100}%)`;
+    indicators.forEach((dot, index) => {
+      dot.classList.toggle('active', index === currentSlide);
+    });
+  }
+
+  function goToSlide(index) {
+    // Call cleanup if defined
+    if (typeof window.cleanupSlide === 'function') {
+      window.cleanupSlide();
+      delete window.cleanupSlide; // Optional: remove the reference
+    }
+
+    currentSlide = index;
+    const container = document.getElementById(`slide${index + 1}`);
+    const file = slideFiles[index];
+
+    fetch(file)
+      .then(res => res.text())
+      .then(html => {
+        const tempDiv = document.createElement('div');
+        tempDiv.innerHTML = html;
+
+        const scripts = tempDiv.querySelectorAll('script');
+        scripts.forEach(script => script.remove());
+
+        container.innerHTML = tempDiv.innerHTML;
+
+        scripts.forEach(oldScript => {
+          const newScript = document.createElement('script');
+          newScript.type = "module";
+          newScript.textContent = oldScript.textContent;
+          container.appendChild(newScript);
+        });
+
+        updateSlidePosition();
+      })
+      .catch(err => {
+        console.error(`Failed to load ${file}:`, err);
+        container.innerHTML = '<p style="color:white; text-align:center;">Failed to load content.</p>';
+        updateSlidePosition();
+      });
+  }
+
+  function nextSlide() {
+    currentSlide = (currentSlide + 1) % 4;
+    goToSlide(currentSlide);
+  }
+
+  function prevSlide() {
+    currentSlide = (currentSlide - 1 + 4) % 4;
+    goToSlide(currentSlide);
+  }
+
+  // Load first slide on page load
+  window.addEventListener('DOMContentLoaded', () => {
+    goToSlide(0);
+  });
+
+  // Your original async version
+  async function clearData() {
+    try {
+      const endpoints = [
+        '/api/captions',
+        '/api/images',
+        '/api/preview-fb',
+        '/api/preview-ig',
+        '/api/preview-linkedIn',
+        '/api/email-items',
+        '/api/videos',
+        '/api/leader-board-1',
+        '/api/leader-board-2',
+        '/api/leader-board-3',
+        '/api/bill-board-1',
+        '/api/bill-board-2',
+        '/api/bill-board-3',
+        '/api/half-page-1',
+        '/api/half-page-2',
+        '/api/half-page-3',
+      ];
+
+      const deletePromises = endpoints.map(url =>
+        fetch(url, { method: 'DELETE' })
+          .then(res => {
+            if (!res.ok) console.error(`Failed: ${url}`);
+          })
+          .catch(err => console.error(`Error with ${url}`, err))
+      );
+
+      await Promise.allSettled(deletePromises);
+      window.location.href = '/views/start.html';
+    } catch (error) {
+      console.error('Unexpected error:', error);
+    }
+  }
+
+  // Inactivity version
+  let inactivityTimer;
+  function resetInactivityTimer() {
+    clearTimeout(inactivityTimer);
+    inactivityTimer = setTimeout(() => {
+      console.log('User inactive. Clearing data...');
+      clearData();
+    // }, 15 * 60 * 1000);
+    },  15 * 1000);
+  }
+
+  ['mousemove', 'keydown', 'scroll', 'touchstart'].forEach(event => {
+    document.addEventListener(event, resetInactivityTimer, true);
+  });
+
+  resetInactivityTimer();
+
+  // Unload version
+  function clearDataSync() {
+    const endpoints = [/* your list */];
+    endpoints.forEach(url => {
+      navigator.sendBeacon(url, '');
+    });
+  }
+
+  window.addEventListener('beforeunload', clearDataSync);
+</script>
+</body>
+</html>

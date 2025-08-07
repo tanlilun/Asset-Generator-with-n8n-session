@@ -86,10 +86,10 @@
       <input type="text" id="campaign_name" name="campaign_name" value="Millennial Miles" required>
 
       <label for="target_audience">Target Audience</label>
-      <input type="text" id="target_audience" name="target_audience" value="Young Professionals (25–35, urban)" required>
+      <input type="text" id="target_audience" name="target_audience" value="Young People (18–21, urban)" required>
 
       <label for="theme">Theme</label>
-      <input type="text" id="theme" name="theme" value="Travel & Experiences" required>
+      <input type="text" id="theme" name="theme" value="Asian Dining Experience" required>
 
       <label for="credit_card_product">Credit Card Product</label>
       <input type="text" id="credit_card_product" name="credit_card_product" value="Travel Rewards Credit Card" required>
@@ -121,13 +121,13 @@
         body: JSON.stringify(payload)
       });
 
-      // window.location.href = '/views/loading.html';
+      window.location.href = '/views/carousel.html';
 
-      if (response.ok) {
-        window.location.href = '/views/loading.html'; // Make sure this file exists in public/views/
-      } else {
-        alert('Something went wrong.');
-      }
+      // if (response.ok) {
+      //   window.location.href = '/views/carousel.html'; // Make sure this file exists in public/views/
+      // } else {
+      //   alert('Something went wrong.');
+      // }
     });
   </script>
 </body>

@@ -38,7 +38,7 @@ app.post('/submit', async (req, res) => {
     const payload = req.body;
 
     // Send data to your n8n webhook (GET or POST depending on your flow)
-    const webhookRes = await fetch(`${N8N_WEBHOOK_URL}/test`, {
+    const webhookRes = await fetch(`${N8N_WEBHOOK_URL}/new-ui-1`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(payload)
@@ -84,12 +84,20 @@ function createInMemoryApi(entityName, routeBase, dataArray) {
 
 createInMemoryApi('captions', '/captions', captionData = []);
 createInMemoryApi('images', '/images', imageData = []);
-createInMemoryApi('processed-images', '/processed-images', processedImageData = []);
-createInMemoryApi('linkedins', '/linkedin', linkedInData = []);
-createInMemoryApi('emails', '/email', emailData = []);
-createInMemoryApi('videos', '/video', videoData = []);
-createInMemoryApi('social-media-templates-1', '/social-media-template-1', html1Data = []);
-createInMemoryApi('social-media-templates-2', '/social-media-template-2', html2Data = []);
+createInMemoryApi('preview-fb', '/preview-fb', previewFbData = []);
+createInMemoryApi('preview-ig', '/preview-ig', previewIgData = []);
+createInMemoryApi('preview-linkedIn', '/preview-linkedIn', previewLinkedInData = []);
+createInMemoryApi('email-items', '/email-items', emailData = []);
+createInMemoryApi('videos', '/videos', videoData = []);
+createInMemoryApi('leader-board-1', '/leader-board-1', leaderBoard1Data = []);
+createInMemoryApi('leader-board-2', '/leader-board-2', leaderBoard2Data = []);
+createInMemoryApi('leader-board-3', '/leader-board-3', leaderBoard3Data = []);
+createInMemoryApi('bill-board-1', '/bill-board-1', billBoard1Data = []);
+createInMemoryApi('bill-board-2', '/bill-board-2', billBoard2Data = []);
+createInMemoryApi('bill-board-3', '/bill-board-3', billBoard3Data = []);
+createInMemoryApi('half-page-1', '/half-page-1', halfPage1Data = []);
+createInMemoryApi('half-page-2', '/half-page-2', halfPage2Data = []);
+createInMemoryApi('half-page-3', '/half-page-3', halfPage3Data = []);
 
 app.use((err, req, res, next) => {
   console.error('❌ Server Error:', err);

@@ -1,0 +1,682 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Social Media Post Comparison</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+        }
+        
+        
+        .s1-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        
+        .s1-social-post {
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            width: 400px;
+            height: 720px;
+            margin-bottom: 20px;
+        }
+
+        .s1-header {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            /* margin-bottom: 8px; */
+            font-size: 18px;
+            margin: 10px auto;
+            padding: 8px 16px;
+            background-color: white;
+            color: black;
+            text-align: center;
+            text-decoration: none;
+            border-radius: 6px;
+            font-weight: bold;
+            width: fit-content;
+        }
+
+        .s1-preview-button {
+            display: block;
+            margin: 10px auto 30px;
+            padding: 8px 16px;
+            background-color: #1877F2;
+            color: white;
+            text-align: center;
+            text-decoration: none;
+            border-radius: 6px;
+            font-weight: bold;
+            width: fit-content;
+        }
+
+        .s1-preview-button:hover {
+            background-color: #145dbf;
+        }
+        
+        /* Common Post Styles */
+        .s1-post-header {
+            display: flex;
+            align-items: center;
+            padding: 12px;
+        }
+        
+        .s1-profile-pic {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            margin-right: 8px;
+            object-fit: cover;
+        }
+        
+        .s1-user-info {
+            flex-grow: 1;
+        }
+        
+        .s1-username {
+            font-weight: 600;
+            font-size: 15px;
+            color: #050505;
+        }
+        
+        .s1-post-time {
+            font-size: 13px;
+            color: #65676B;
+        }
+        
+        .s1-post-content {
+            padding: 0 12px 12px;
+            font-size: 15px;
+            line-height: 1.4;
+        }
+        
+        .s1-post-image {
+            width: 100%;
+            max-height: 400px;
+            object-fit: cover;
+        }
+        
+        .s1-post-actions {
+            display: flex;
+            padding: 8px 12px;
+            font-size: 15px;
+            font-weight: 600;
+        }
+        
+        .s1-action {
+            display: flex;
+            align-items: center;
+            margin-right: 16px;
+        }
+        
+        .s1-action svg {
+            margin-right: 6px;
+        }
+        
+        .s1-likes-comments {
+            padding: 10px 12px;
+            font-size: 15px;
+        }
+        
+        /* Facebook Specific */
+        .s1-facebook-post {
+            border: 1px solid #dddfe2;
+        }
+        
+        .s1-facebook-post .post-time {
+            display: flex;
+            align-items: center;
+        }
+        
+        .s1-facebook-post .post-content {
+            color: #050505;
+        }
+        
+        .s1-facebook-post .likes-comments {
+            border-top: 1px solid #ddd;
+            border-bottom: 1px solid #ddd;
+            color: #65676B;
+        }
+        
+        .s1-facebook-post .post-actions {
+            color: #65676B;
+            justify-content: space-between;
+        }
+        
+        /* Instagram Specific */
+        .s1-instagram-post {
+            border: 1px solid #dbdbdb;
+        }
+        
+        .s1-instagram-post .post-header {
+            border-bottom: 1px solid #efefef;
+        }
+        
+        .s1-instagram-post .post-content {
+            color: #262626;
+        }
+        
+        .s1-instagram-post .likes-comments {
+            color: #262626;
+            border-top: 1px solid #efefef;
+        }
+        
+        .s1-instagram-post .action {
+            color: #262626;
+        }
+        
+        /* LinkedIn Specific */
+        .s1-linkedin-post {
+            border: 1px solid #e0e0e0;
+        }
+        
+        .s1-linkedin-post .post-header {
+            border-bottom: 1px solid #e0e0e0;
+        }
+        
+        .s1-linkedin-post .post-content {
+            color: #000000;
+        }
+        
+        .s1-linkedin-post .likes-comments {
+            color: #666666;
+            border-top: 1px solid #e0e0e0;
+        }
+        
+        .s1-linkedin-post .post-actions {
+            border-top: 1px solid #e0e0e0;
+            color: #666666;
+            justify-content: space-around;
+        }
+        .s1-email-container {
+            max-width: 600px;
+            margin: 0 auto;
+            text-align: center;
+            padding: 20px;
+        }
+        
+        /* Responsive Adjustments */
+        @media (max-width: 900px) {
+            .s1-container {
+                flex-direction: column;
+                align-items: center;
+            }
+            .s1-social-post {
+                max-width: 400px;
+            }
+        }
+        .s1-email-full {
+            flex: 1 1 100%;
+            max-width: 400px;
+        }
+
+        /* When it wraps to the next row and has enough screen space */
+        @media (min-width: 1280px) {
+            .s1-container {
+                align-items: flex-start;
+            }
+            .s1-email-full {
+                max-width: 1250px;
+            }
+        }
+
+        .loader-wrapper {
+            display: flex;
+            justify-content: center;
+        }
+        .loader {
+            border: 8px solid #f3f3f3;
+            border-top: 8px solid #007bff;
+            border-radius: 50%;
+            width: 60px;
+            height: 60px;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        .message {
+            text-align: center;
+            font-size: 18px;
+            margin-bottom: 30px;
+        }
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="s1-container">
+        <!-- Facebook Post -->
+        <div>
+            <h3 class="s1-header">
+                <svg width="20" height="20" fill="#1877F2" viewBox="0 0 24 24">
+                    <path d="M22.675 0h-21.35C.595 0 0 .593 0 1.325v21.351C0 23.406.595 24 1.325 
+                    24H12.82v-9.294H9.692V11.01h3.128V8.412c0-3.1 1.894-4.788 
+                    4.659-4.788 1.325 0 2.463.099 2.795.143v3.24l-1.918.001c-1.504 
+                    0-1.796.715-1.796 1.763v2.312h3.587l-.467 3.696h-3.12V24h6.116C23.406 
+                    24 24 23.406 24 22.675V1.325C24 .593 23.406 0 22.675 0z"/>
+                </svg>
+                Facebook Post
+            </h3>
+            <div class="s1-social-post s1-facebook-post">
+                <div class="s1-post-header">
+                    <img src="https://ladiesstyleclothes.wordpress.com/wp-content/uploads/2015/12/cimb-logo.png" alt="Profile" class="s1-profile-pic">
+                    <div class="s1-user-info">
+                        <div class="s1-username">CIMB</div>
+                        <div class="s1-post-time">
+                            Just Now
+                            <span>•</span>
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" width="16" height="16" fill="#65676B">
+                                <path d="M8 1a7 7 0 1 0 0 14A7 7 0 0 0 8 1zm0 13a6 6 0 1 1 0-12 6 6 0 0 1 0 12zm-.5-9v4h1V5h-1zm0 5v1h1v-1h-1z"></path>
+                            </svg>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="fb-caption-loading-section" class="">
+                    <div class="loader-wrapper">
+                        <div class="loader"></div>
+                    </div>
+                    <div class="message">Loading Caption... Please Wait!</div>
+                </div>
+                <div id="fb-caption-section" class="s1-post-content hidden">
+                </div>
+
+                <div id="fb-image-loading-section" class="">
+                    <div class="loader-wrapper">
+                        <div class="loader"></div>
+                    </div>
+                    <div class="message">Loading Image... Please Wait!</div>
+                </div>
+                <div id="fb-image-section" class="hidden"></div>
+                
+                <div class="s1-likes-comments">
+                    <div class="s1-likes-count">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" width="16" height="16" fill="#1877F2">
+                            <path d="M16 8a8 8 0 1 1-16 0 8 8 0 0 1 16 0zm-6 0a2 2 0 1 0-4 0 2 2 0 0 0 4 0zM8 0a8 8 0 1 1 0 16A8 8 0 0 1 8 0z"></path>
+                        </svg>
+                        245
+                    </div>
+                    <div>42 comments • 12 shares</div>
+                </div>
+                
+                <div class="s1-post-actions">
+                    <div class="s1-action">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" width="16" height="16" fill="#65676B">
+                            <path d="M14 9a1 1 0 0 1-1 1H9v3a1 1 0 0 1-2 0v-3H3a1 1 0 0 1 0-2h4V4a1 1 0 0 1 2 0v4h4a1 1 0 0 1 1 1z"></path>
+                        </svg>
+                        Like
+                    </div>
+                    <div class="s1-action">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" width="16" height="16" fill="#65676B">
+                            <path d="M8 1a7 7 0 0 0-7 7c0 1.668.5 3.218 1.36 4.52L1 15l2.48-2.36A6.96 6.96 0 0 0 8 15a7 7 0 0 0 0-14zm0 13a6 6 0 1 1 0-12 6 6 0 0 1 0 12z"></path>
+                        </svg>
+                        Comment
+                    </div>
+                    <div class="s1-action">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" width="16" height="16" fill="#65676B">
+                            <path d="M12 4a1 1 0 0 1 1 1v6a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V5a1 1 0 0 1 1-1h8zm0-2H4a3 3 0 0 0-3 3v6a3 3 0 0 0 3 3h8a3 3 0 0 0 3-3V5a3 3 0 0 0-3-3z"></path>
+                        </svg>
+                        Share
+                    </div>
+                </div>
+            </div>
+            <div id="fb-preview-loading-section" class="">
+                <div class="loader-wrapper">
+                    <div class="loader"></div>
+                </div>
+                <div class="message">Uploading Post... Please Wait!</div>
+            </div>
+            <div id="fb-preview-button" class="hidden"></div>
+        </div>
+        <!-- Instagram Post -->
+        <div>
+            <h3 class="s1-header">
+                <i class="fab fa-instagram" style="color: #E1306C;"></i>
+                Instagram Post
+            </h3>
+            <div class="s1-social-post s1-instagram-post">
+                <div class="s1-post-header">
+                    <img src="https://ladiesstyleclothes.wordpress.com/wp-content/uploads/2015/12/cimb-logo.png" alt="Profile" class="s1-profile-pic">
+                    <div class="s1-user-info">
+                        <div class="s1-username">CIMB</div>
+                        <div class="s1-post-time">Just Now</div>
+                    </div>
+                    <!-- <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="#262626">
+                        <path d="M12 10a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm-5 2a5 5 0 1 1 10 0 5 5 0 0 1-10 0zm5-7a7 7 0 1 0 0 14 7 7 0 0 0 0-14z"></path>
+                    </svg> -->
+                </div>
+
+                <div id="ig-video-loading-section">
+                    <div class="loader-wrapper">
+                        <div class="loader"></div>
+                    </div>
+                    <div class="message">Loading Short Video... Please Wait!</div>
+                </div>
+
+                <div id="ig-video-section" class="hidden">
+                </div>
+                
+                <div class="s1-post-actions">
+                    <div class="s1-action">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="#262626">
+                            <path d="M16.792 3.904A4.959 4.959 0 0 1 21 8.027v7.828a5.5 5.5 0 0 1-5.5 5.5H8.5a5.5 5.5 0 0 1-5.5-5.5V8.027a4.959 4.959 0 0 1 4.208-4.123 4.96 4.96 0 0 1 4.792 4.123 4.96 4.96 0 0 1 4.792-4.123zM12 7.027a2.5 2.5 0 1 0 0 5 2.5 2.5 0 0 0 0-5z"></path>
+                        </svg>
+                    </div>
+                    <div class="s1-action">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="#262626">
+                            <path d="M20.656 17.008a9.993 9.993 0 1 0-3.59 3.615L22 22l-1.344-4.992z"></path>
+                        </svg>
+                    </div>
+                    <div class="s1-action">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="#262626">
+                            <path d="M8 5v14l11-7L8 5z"></path>
+                        </svg>
+                    </div>
+                    <div class="s1-action" style="margin-left: auto;">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="#262626" viewBox="0 0 24 24">
+                            <path d="M6 2C4.89543 2 4 2.89543 4 4V20.382C4 21.2697 5.07714 21.7305 5.70711 21.1213L12 15.4142L18.2929 21.1213C18.9229 21.7305 20 21.2697 20 20.382V4C20 2.89543 19.1046 2 18 2H6Z" />
+                        </svg>
+                    </div>
+                </div>
+                
+                <div class="s1-likes-comments">
+                    <div class="s1-likes-count">1,234 likes</div>
+                    <div class="s1-post-content">
+                        <strong>CIMB</strong> 
+                        <div id="ig-caption-loading-section" class="">
+                            <div class="loader-wrapper">
+                                <div class="loader"></div>
+                            </div>
+                            <div class="message">Loading Caption... Please Wait!</div>
+                        </div>
+                        <div id="ig-caption-section" class="hidden">
+                        </div>
+                    </div>
+                    <div style="color: #8e8e8e;">View all 42 comments</div>
+                </div>
+            </div>
+            <div id="ig-preview-loading-section" class="">
+                <div class="loader-wrapper">
+                    <div class="loader"></div>
+                </div>
+                <div class="message">Uploading Post... Please Wait!</div>
+            </div>
+            <div id="ig-preview-button" class="hidden"></div>
+        </div>
+        <!-- LinkedIn Post -->
+        <div>
+            <h3 class="s1-header">
+                <svg width="20" height="20" fill="#0077B5" viewBox="0 0 24 24">
+                    <path d="M20.447 20.452H17.4v-5.569c0-1.328-.025-3.042-1.852-3.042-1.853 
+                    0-2.136 1.445-2.136 2.939v5.672h-3.049V9h2.929v1.561h.041c.408-.775 
+                    1.403-1.59 2.89-1.59 3.088 0 3.659 2.034 3.659 4.678v6.803zM5.337 
+                    7.433a1.77 1.77 0 1 1 0-3.54 1.77 1.77 0 0 1 0 
+                    3.54zm1.524 13.019H3.813V9h3.048v11.452zM22.225 
+                    0H1.771C.792 0 0 .774 0 1.723v20.549C0 23.226.792 24 
+                    1.771 24h20.451C23.2 24 24 23.226 24 22.272V1.723C24 
+                    .774 23.2 0 22.222 0z"/>
+                </svg>
+                LinkedIn Post
+            </h3>
+            <div class="s1-social-post s1-linkedin-post">
+                <div class="s1-post-header">
+                    <img src="https://ladiesstyleclothes.wordpress.com/wp-content/uploads/2015/12/cimb-logo.png" alt="Profile" class="s1-profile-pic">
+                    <div class="s1-user-info">
+                        <div class="s1-username">CIMB</div>
+                        <div class="s1-post-time">Marketing Director • Just Now</div>
+                    </div>
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="#666666">
+                        <path d="M12 10a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm-5 2a5 5 0 1 1 10 0 5 5 0 0 1-10 0zm5-7a7 7 0 1 0 0 14 7 7 0 0 0 0-14z"></path>
+                    </svg>
+                </div>
+
+                <div id="linkedIn-caption-loading-section">
+                    <div class="loader-wrapper">
+                        <div class="loader"></div>
+                    </div>
+                    <div class="message">Loading Caption... Please Wait!</div>
+                </div>
+                <div id="linkedIn-caption-section" class="s1-post-content hidden">
+                </div>
+
+                <div id="linkedIn-image-loading-section">
+                    <div class="loader-wrapper">
+                        <div class="loader"></div>
+                    </div>
+                    <div class="message">Loading Image... Please Wait!</div>
+                </div>
+                <div id="linkedIn-image-section" class="hidden">
+                </div>
+
+                <div class="s1-likes-comments">
+                    <div class="s1-likes-count">245 • 42 comments</div>
+                </div>
+                
+                <div class="s1-post-actions">
+                    <div class="s1-action">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="#666666">
+                            <path d="M19.46 11l-3.91-3.91a7 7 0 0 1-9.9 0L4.54 11a9 9 0 0 0 14.92 0zM12 4.53L14.47 7a7 7 0 0 1-4.94 0L12 4.53z"></path>
+                        </svg>
+                        Like
+                    </div>
+                    <div class="s1-action">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="#666666">
+                            <path d="M12 3c-4.97 0-9 3.185-9 7.115 0 2.557 1.522 4.82 3.889 6.115l-.78 2.77 3.116-1.65c.88.275 1.823.425 2.775.425 4.97 0 9-3.186 9-7.115C21 6.186 16.97 3 12 3z"></path>
+                        </svg>
+                        Comment
+                    </div>
+                    <div class="s1-action">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="#666666">
+                            <path d="M17 8h2a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V9a1 1 0 0 1 1-1h2V6a6 6 0 1 1 12 0v2zM7 10v10h10V10H7zm6-4a4 4 0 0 0-4 4h8a4 4 0 0 0-4-4z"></path>
+                        </svg>
+                        Repost
+                    </div>
+                    <div class="s1-action">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="#666666">
+                            <path d="M17 8h2a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V9a1 1 0 0 1 1-1h2V6a6 6 0 1 1 12 0v2zM7 10v10h10V10H7zm6-4a4 4 0 0 0-4 4h8a4 4 0 0 0-4-4z"></path>
+                        </svg>
+                        Send
+                    </div>
+                </div>
+            </div>
+            <div id="linkedIn-preview-loading-section" class="">
+                <div class="loader-wrapper">
+                    <div class="loader"></div>
+                </div>
+                <div class="message">Uploading Post... Please Wait!</div>
+            </div>
+            <div id="linkedIn-preview-button" class="hidden"></div>
+        </div>
+    </div>
+
+    <script type="module">
+        const fbCaptionSection = document.getElementById('fb-caption-section');
+        const igCaptionSection = document.getElementById('ig-caption-section');
+        const linkedInCaptionSection = document.getElementById('linkedIn-caption-section');
+        const fbPreviewSection = document.getElementById('fb-preview-button');
+        const igPreviewSection = document.getElementById('ig-preview-button');
+        const linkedInPreviewSection = document.getElementById('linkedIn-preview-button');
+
+        const fbCaptionLoadingSection = document.getElementById('fb-caption-loading-section');
+        const igCaptionLoadingSection = document.getElementById('ig-caption-loading-section');
+        const linkedInCaptionLoadingSection = document.getElementById('linkedIn-caption-loading-section');
+        const fbPreviewLoadingSection = document.getElementById('fb-preview-loading-section');
+        const igPreviewLoadingSection = document.getElementById('ig-preview-loading-section');
+        const linkedInPreviewLoadingSection = document.getElementById('linkedIn-preview-loading-section');
+
+        const fbImageSection = document.getElementById('fb-image-section');
+        const igVideoSection = document.getElementById('ig-video-section');
+        const linkedInImageSection = document.getElementById('linkedIn-image-section');
+        const fbImageLoadingSection = document.getElementById('fb-image-loading-section');
+        const igVideoLoadingSection = document.getElementById('ig-video-loading-section');
+        const linkedInImageLoadingSection = document.getElementById('linkedIn-image-loading-section');
+
+        const loaded = {
+            captions: false,
+            images: false,
+            videos: false,
+            previewFb: false,
+            previewIg: false,
+            previewLinkedIn: false
+        };
+
+        async function pollStatus() {
+            let needsRetry = false;
+
+            const requests = [];
+
+            if (!loaded.captions) requests.push(fetch('/api/captions'));
+            if (!loaded.previewFb) requests.push(fetch('/api/preview-fb'));
+            if (!loaded.previewIg) requests.push(fetch('/api/preview-ig'));
+            if (!loaded.previewLinkedIn) requests.push(fetch('/api/preview-linkedIn'));
+            if (!loaded.images) requests.push(fetch('/api/images'));
+            if (!loaded.videos) requests.push(fetch('/api/videos'));
+            
+            const responses = await Promise.all(requests);
+            const data = await Promise.all(responses.map(res => res.json()));
+
+            let i = 0;
+
+            if (!loaded.captions) {
+                const data1 = data[i++];
+                if (data1.length > 0) {
+                    const caption = data1[0];
+                    fbCaptionSection.innerHTML = `
+                        <p>${caption.facebook}</p>
+                    `;
+                    igCaptionSection.innerHTML = `
+                        <p>${caption.instagram}</p>
+                    `;
+                    linkedInCaptionSection.innerHTML = `
+                        <p>${caption.linkedin}</p>
+                    `;
+                    fbCaptionSection.classList.remove('hidden');
+                    igCaptionSection.classList.remove('hidden');
+                    linkedInCaptionSection.classList.remove('hidden');
+                    fbCaptionLoadingSection.classList.add('hidden');
+                    igCaptionLoadingSection.classList.add('hidden');
+                    linkedInCaptionLoadingSection.classList.add('hidden');
+                    loaded.captions = true;
+                } else {
+                needsRetry = true;
+                }
+            }
+
+            if (!loaded.previewFb) {
+                const data2 = data[i++];
+                if (data2.length > 0) {
+                    const previewFb = data2[0];
+                    fbPreviewSection.innerHTML = `
+                        <a href="${previewFb.facebook_url}" target="_blank" class="s1-preview-button">Preview on Facebook</a>
+                    `;
+                    fbPreviewSection.classList.remove('hidden');
+                    fbPreviewLoadingSection.classList.add('hidden');
+                    loaded.previewFb = true;
+                } else {
+                needsRetry = true;
+                }
+            }
+
+            if (!loaded.previewIg) {
+                const data3 = data[i++];
+                if (data3.length > 0) {
+                    const previewLink = data3[0];
+                    igPreviewSection.innerHTML = `
+                        <a href="${previewLink.instagram_url}" target="_blank" class="s1-preview-button">Preview on Instagram</a>
+                    `;
+                    igPreviewSection.classList.remove('hidden');
+                    igPreviewLoadingSection.classList.add('hidden');
+                    loaded.previewIg = true;
+                } else {
+                needsRetry = true;
+                }
+            }
+
+            if (!loaded.previewLinkedIn) {
+                const data4 = data[i++];
+                if (data4.length > 0) {
+                    const previewLink = data4[0];
+                    linkedInPreviewSection.innerHTML = `
+                        <a href="${previewLink.linkedin_url}" target="_blank" class="s1-preview-button">Preview on LinkedIn</a>
+                    `;
+                    linkedInPreviewSection.classList.remove('hidden');
+                    linkedInPreviewLoadingSection.classList.add('hidden');
+                    loaded.previewLinkedIn = true;
+                } else {
+                needsRetry = true;
+                }
+            }
+
+            if (!loaded.images) {
+                const data5 = data[i++];
+                if (data5.length > 0) {
+                    const image = data5[0];
+                    fbImageSection.innerHTML = `
+                        <img src="${image.image_url}" alt="Post image" class="s1-post-image">
+                    `;
+                    linkedInImageSection.innerHTML = `
+                        <img src="${image.image_url}" alt="Post image" class="s1-post-image">
+                    `;
+                    fbImageSection.classList.remove('hidden');
+                    linkedInImageSection.classList.remove('hidden');
+                    fbImageLoadingSection.classList.add('hidden');
+                    linkedInImageLoadingSection.classList.add('hidden');
+                    loaded.images = true;
+                } else {
+                needsRetry = true;
+                }
+            }
+
+            if (!loaded.videos) {
+                const data6 = data[i++];
+                if (data6.length > 0) {
+                    const video = data6[0];
+                    igVideoSection.innerHTML = `
+                        <video autoplay loop muted playsinline width="100%" height="360">
+                        <source src="${video.video_url}" type="video/mp4">
+                        Your browser does not support the video tag.
+                        </video>
+                    `;
+                    igVideoSection.classList.remove('hidden');
+                    igVideoLoadingSection.classList.add('hidden');
+                    loaded.videos = true;
+                } else {
+                needsRetry = true;
+                }
+            }
+
+            if (needsRetry) {
+                setTimeout(pollStatus, 2000);
+            }
+        }
+
+        const intervalId = setInterval(() => {
+            console.log('Running slide 1 logic...');
+        }, 1000);
+
+        window.cleanupSlide = () => {
+            clearInterval(intervalId);
+            console.log('Cleaned up slide 1');
+        };
+
+        pollStatus();
+    </script>
+</body>
+</html>
