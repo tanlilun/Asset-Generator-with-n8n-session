@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gen AI Demo</title>
+  <style>
+    body {
+      font-family: system-ui, -apple-system, sans-serif;
+      line-height: 1.6;
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 20px;
+      color: #333;
+    }
+
+    .container {
+      max-width: 800px;
+      background: #fff;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      padding: 20px;
+      margin-bottom: 20px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    h2 {
+      text-align: center;
+      margin-bottom: 25px;
+      color: #333;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: 600;
+      color: #444;
+    }
+
+    input[type="text"] {
+      width: 96.5%;
+      padding: 10px 12px;
+      margin-bottom: 20px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      transition: border 0.3s ease;
+    }
+
+    input[type="text"]:focus {
+      border-color: #007bff;
+      outline: none;
+    }
+
+    button {
+      width: 100%;
+      padding: 12px;
+      background-color: #007bff;
+      color: white;
+      font-size: 16px;
+      font-weight: bold;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    button:hover {
+      background-color: #0056b3;
+    }
+
+    @media (max-width: 600px) {
+      .container {
+        padding: 20px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <h1>Gen AI Demo</h1>
+  <!-- Start Screen -->
+  <div class="container">
+    <h1>Campaign Form</h1>
+    <form id="demoForm" action="/submit" method="POST">
+      
+      <label for="campaign_name">Campaign Name</label>
+      <input type="text" id="campaign_name" name="campaign_name" value="Millennial Miles" required>
+
+      <label for="target_audience">Target Audience</label>
+      <input type="text" id="target_audience" name="target_audience" value="Young People (18–21, urban)" required>
+
+      <label for="theme">Theme</label>
+      <input type="text" id="theme" name="theme" value="Asian Dining Experience" required>
+
+      <label for="credit_card_product">Credit Card Product</label>
+      <input type="text" id="credit_card_product" name="credit_card_product" value="Travel Rewards Credit Card" required>
+
+      <label for="objective">Objective</label>
+      <input type="text" id="objective" name="objective" value="Drive new applications; boost card usage" required>
+
+      <label for="channel">Channel</label>
+      <input type="text" id="channel" name="channel" value="Instagram" required>
+
+      <label for="key_kpis">Key KPIs</label>
+      <input type="text" id="key_kpis" name="key_kpis" value="App volume, activation rate, spend volume" required>
+
+      <button type="submit">Submit to Webhook</button>
+    </form>
+  </div>
+  
+  <script>
+    document.getElementById('demoForm').addEventListener('submit', async function (e) {
+      e.preventDefault();
+
+      const form = e.target;
+      const formData = new FormData(form);
+      const payload = Object.fromEntries(formData.entries());
+
+      const response = await fetch('/submit', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      });
+
+      if (response.ok) {
+        window.location.href = '/views/carousel.html'; // Make sure this file exists in public/views/
+      } else {
+        alert('Something went wrong.');
+      }
+    });
+  </script>
+</body>
+</html>

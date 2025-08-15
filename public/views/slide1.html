@@ -6,6 +6,9 @@
     <title>Social Media Post Comparison</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <style>
+        body {
+            background-color: #1e3a8a;
+        }
         * {
             margin: 0;
             padding: 0;
@@ -29,7 +32,7 @@
             box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
             overflow: hidden;
             width: 400px;
-            height: 720px;
+            height: 625px;
             margin-bottom: 20px;
         }
 
@@ -133,80 +136,369 @@
         }
         
         /* Facebook Specific */
-        .s1-facebook-post {
-            border: 1px solid #dddfe2;
+        .fb-header {
+            display: flex;
+            align-items: center;
+            padding: 16px 16px 0 16px;
         }
-        
-        .s1-facebook-post .post-time {
+        .fb-profile-img {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            margin-right: 12px;
+            background: #fff;
+            border: 2px solid #fff;
+        }
+        .fb-profile-details {
+            flex: 1;
+        }
+        .fb-profile-name {
+            font-weight: 700;
+            font-size: 16px;
             display: flex;
             align-items: center;
         }
-        
-        .s1-facebook-post .post-content {
-            color: #050505;
+        .fb-profile-name .fa-check-circle {
+            color: #1877f2;
+            font-size: 15px;
+            margin-left: 5px;
         }
-        
-        .s1-facebook-post .likes-comments {
-            border-top: 1px solid #ddd;
-            border-bottom: 1px solid #ddd;
-            color: #65676B;
+        .fb-profile-meta {
+            font-size: 13px;
+            color: #3a3b3c;
+            margin-top: 2px;
+            display: flex;
+            align-items: center;
         }
-        
-        .s1-facebook-post .post-actions {
-            color: #65676B;
+        .fb-profile-meta .fa-globe-asia {
+            margin-left: 4px;
+            font-size: 12px;
+        }
+        .fb-post-content {
+            padding: 8px 16px 0 16px;
+            font-size: 16px;
+            color: black;
+            line-height: 1.4;
+            position: relative;
+            text-align: justify;
+        }
+        .fb-post-image-box {
+            margin: 16px 0 0 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: #e6f0fa;
+            border-radius: 0 0 12px 12px;
+            min-height: 300px;
+            overflow: hidden;
+        }
+        .fb-post-image-box img {
+            width: 100%;
+            max-width: 100%;
+            height: auto;
+            display: block;
+            object-fit: cover;
+        }
+        .fb-post-actions {
+            display: flex;
+            align-items: center;
+            padding: 0 16px 0 16px;
+            margin-top: 10px;
+            border-bottom: 1px solid transparent;
+            padding-bottom: 6px;
+        }
+        .fb-post-actions .fb-reactions {
+            display: flex;
+            align-items: center;
+            font-size: 15px;
+            color: #3a3b3c;
+        }
+        .fb-post-actions .fb-reactions .fa-thumbs-up {
+            background: #1877f2;
+            color: #fff;
+            border-radius: 50%;
+            padding: 2px 3px;
+            font-size: 13px;
+            margin-right: 4px;
+            border: 1px solid #fff;
+        }
+        .fb-post-actions .fb-comments-shares {
+            margin-left: auto;
+            font-size: 15px;
+            color: #3a3b3c;
+        }
+        .fb-post-buttons {
+            display: flex;
             justify-content: space-between;
+            align-items: center;
+        }
+        .fb-post-buttons button {
+            background: none;
+            border: none;
+            color: #3a3b3c;
+            font-size: 15px;
+            padding: 8px 0;
+            border-radius: 6px;
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background 0.2s;
+            cursor: pointer;
+        }
+        .fb-post-buttons button:hover {
+            background: #b0b3b8;
+        }
+        .fb-post-buttons button i {
+            margin-right: 8px;
+            font-size: 20px;
         }
         
         /* Instagram Specific */
-        .s1-instagram-post {
-            border: 1px solid #dbdbdb;
+        .insta-header {
+            display: flex;
+            align-items: center;
+            padding: 14px 16px 14px 14px;
         }
-        
-        .s1-instagram-post .post-header {
-            border-bottom: 1px solid #efefef;
+        .insta-actions {
+            display: flex;
+            align-items: center;
+            padding: 16px 18px 0 18px;
         }
-        
-        .s1-instagram-post .post-content {
-            color: #262626;
+        .insta-actions i {
+            color: #3a3b3c;
+            font-size: 20px;
+            margin-right: 22px;
+            cursor: pointer;
         }
-        
-        .s1-instagram-post .likes-comments {
-            color: #262626;
-            border-top: 1px solid #efefef;
+        .insta-actions .spacer {
+            flex: 1;
         }
-        
-        .s1-instagram-post .action {
-            color: #262626;
+        .insta-actions .fa-bookmark {
+            margin-right: 0;
+        }
+        .insta-actions .like-count {
+            color: #3a3b3c;
+            font-weight: 500;
+            margin-left: -16px;
+            margin-right: 22px;
+            font-size: 16px;
+            letter-spacing: 0.5px;
+        }
+        .insta-caption {
+            color: black;
+            font-family: 'Roboto', Arial, sans-serif;
+            font-size: 16px;
+            padding: 6px 18px 0 18px;
+            line-height: 1.4;
+            text-align: justify;
+        }
+        .insta-caption .ig-profile-name {
+            font-weight: 700;
+            color: #3a3b3c;
+            margin-right: 4px;
+            font-family: 'Roboto', Arial, sans-serif;
+        }
+        .insta-date {
+            color: #bdbdbd;
+            font-size: 14px;
+            font-family: 'Roboto', Arial, sans-serif;
+            padding: 6px 18px 18px 18px;
         }
         
         /* LinkedIn Specific */
-        .s1-linkedin-post {
-            border: 1px solid #e0e0e0;
+        .post-header {
+            display: flex;
+            align-items: center;
+            padding: 16px 16px 0 16px;
         }
-        
-        .s1-linkedin-post .post-header {
-            border-bottom: 1px solid #e0e0e0;
+        .profile-pic {
+            width: 48px;
+            height: 48px;
+            border-radius: 8px;
+            background: #F28C4B;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 12px;
+            flex-shrink: 0;
         }
-        
-        .s1-linkedin-post .post-content {
-            color: #000000;
+        .profile-pic svg {
+            width: 32px;
+            height: 32px;
+            display: block;
         }
-        
-        .s1-linkedin-post .likes-comments {
-            color: #666666;
-            border-top: 1px solid #e0e0e0;
+        .profile-info {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
         }
-        
-        .s1-linkedin-post .post-actions {
-            border-top: 1px solid #e0e0e0;
-            color: #666666;
-            justify-content: space-around;
+        .lin-profile-name {
+            font-weight: 700;
+            font-size: 16px;
+            margin-bottom: 2px;
+            color: black;
+            line-height: 1.2;
         }
-        .s1-email-container {
-            max-width: 600px;
-            margin: 0 auto;
-            text-align: center;
-            padding: 20px;
+        .profile-followers {
+            font-size: 12px;
+            color: #3a3b3c;
+            margin-bottom: 2px;
+        }
+        .profile-meta {
+            font-size: 12px;
+            color: #3a3b3c;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+        .profile-meta i {
+            font-size: 0.85em;
+            margin-left: 2px;
+        }
+        .post-options {
+            color: #3a3b3c;
+            font-size: 16px;
+            margin-left: 8px;
+            margin-top: 2px;
+            cursor: pointer;
+        }
+        .post-content {
+            padding: 12px 16px 0 16px;
+            font-size: 1.18rem;
+            color: #fff;
+            line-height: 1.5;
+            letter-spacing: 0.01em;
+            position: relative;
+            overflow: hidden;
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            max-height: 4.8em;
+            transition: max-height 0.3s;
+        }
+        .post-content.expanded {
+            -webkit-line-clamp: unset;
+            max-height: 1000px;
+            overflow: visible;
+        }
+        .more-link {
+        color: #3b8eea;
+        font-weight: 500;
+        cursor: pointer;
+        background: none;
+        border: none;
+        font-family: inherit;
+        font-size: 20px;
+        padding: 0;
+        margin-left: 4px;
+        position: absolute;
+        right: 0;
+        bottom: 0;
+        background: linear-gradient(to right, rgba(35,38,40,0), #232628 80%);
+        }
+        .post-image-section {
+        width: 100%;
+        height: 260px;
+        background: #e5dbce;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: relative;
+        margin-top: 18px;
+        overflow: hidden;
+        }
+        .post-image {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        display: block;
+        }
+        .post-footer {
+        padding: 0 16px;
+        display: flex;
+        align-items: center;
+        height: 48px;
+        font-size: 20px;
+        color: #b0b3b8;
+        justify-content: space-between;
+        }
+        .post-footer .reactions {
+        display: flex;
+        align-items: center;
+        gap: -18px;
+        font-size: 16px;
+        }
+        .post-footer .reactions .fa-thumbs-up {
+        background-color: #378fe9;
+        color: white;
+        border-radius: 50%;
+        padding: 2px 3px;
+        font-size: 13px;
+        margin-right: -8px;
+        border: 1px solid #fff;
+        }
+        .post-footer .reactions .fa-heart {
+        background-color: #f65e6b;
+        color: white;
+        border-radius: 50%;
+        padding: 2px 3px;
+        font-size: 13px;
+        margin-right: -8px;
+        border: 1px solid #fff;
+        }
+        .post-footer .reactions .fa-hands-clapping {
+        background-color: #4bb543;
+        color: white;
+        border-radius: 50%;
+        padding: 2px 3px;
+        font-size: 13px;
+        border: 1px solid #fff;
+        }
+        .post-footer .right-info {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        color: #3a3b3c;
+        font-size: 16px;
+        }
+        .post-footer .right-info span {
+        color: #3a3b3c;
+        }
+        .post-footer .right-info .dot {
+        margin: 0 6px;
+        font-size: 16px;
+        color: #3a3b3c;
+        line-height: 1;
+        }
+        .post-actions-bar {
+        border-top: 1px solid #b0b3b880;
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+        height: 56px;
+        padding: 0 0 2px 0;
+        }
+        .post-action {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        color: #3a3b3c;
+        font-size: 16px;
+        cursor: pointer;
+        flex: 1;
+        justify-content: center;
+        height: 100%;
+        transition: color 0.2s;
+        border-radius: 6px;
+        }
+        .post-action i {
+        font-size: 20px;
+        margin-bottom: 2px;
+        }
+        .post-action:hover {
+        background-color: #b0b3b8;
         }
         
         /* Responsive Adjustments */
@@ -274,19 +566,25 @@
                 </svg>
                 Facebook Post
             </h3>
-            <div class="s1-social-post s1-facebook-post">
-                <div class="s1-post-header">
-                    <img src="https://ladiesstyleclothes.wordpress.com/wp-content/uploads/2015/12/cimb-logo.png" alt="Profile" class="s1-profile-pic">
-                    <div class="s1-user-info">
-                        <div class="s1-username">CIMB</div>
-                        <div class="s1-post-time">
-                            Just Now
-                            <span>•</span>
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" width="16" height="16" fill="#65676B">
-                                <path d="M8 1a7 7 0 1 0 0 14A7 7 0 0 0 8 1zm0 13a6 6 0 1 1 0-12 6 6 0 0 1 0 12zm-.5-9v4h1V5h-1zm0 5v1h1v-1h-1z"></path>
-                            </svg>
+            <div class="s1-social-post">
+                <div class="fb-header">
+                    <img alt="Profile" class="fb-profile-img" height="40" src="https://ladiesstyleclothes.wordpress.com/wp-content/uploads/2015/12/cimb-logo.png" width="40"/>
+                    <div class="fb-profile-details">
+                        <div class="fb-profile-name">
+                            CIMB Malaysia
+                            <i class="fas fa-check-circle">
+                            </i>
+                        </div>
+                        <div class="fb-profile-meta">
+                            Just Now ·
+                            <i class="fas fa-globe-asia">
+                            </i>
                         </div>
                     </div>
+                    <div class="post-options">
+                            <i class="fas fa-ellipsis-h">
+                            </i>
+                        </div>
                 </div>
 
                 <div id="fb-caption-loading-section" class="">
@@ -295,7 +593,8 @@
                     </div>
                     <div class="message">Loading Caption... Please Wait!</div>
                 </div>
-                <div id="fb-caption-section" class="s1-post-content hidden">
+                <div id="fb-caption-section" class="fb-post-content hidden">
+                    
                 </div>
 
                 <div id="fb-image-loading-section" class="">
@@ -304,121 +603,49 @@
                     </div>
                     <div class="message">Loading Image... Please Wait!</div>
                 </div>
-                <div id="fb-image-section" class="hidden"></div>
-                
-                <div class="s1-likes-comments">
-                    <div class="s1-likes-count">
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" width="16" height="16" fill="#1877F2">
-                            <path d="M16 8a8 8 0 1 1-16 0 8 8 0 0 1 16 0zm-6 0a2 2 0 1 0-4 0 2 2 0 0 0 4 0zM8 0a8 8 0 1 1 0 16A8 8 0 0 1 8 0z"></path>
-                        </svg>
-                        245
-                    </div>
-                    <div>42 comments • 12 shares</div>
+                <div id="fb-image-section" class="fb-post-image-box hidden">
                 </div>
                 
-                <div class="s1-post-actions">
-                    <div class="s1-action">
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" width="16" height="16" fill="#65676B">
-                            <path d="M14 9a1 1 0 0 1-1 1H9v3a1 1 0 0 1-2 0v-3H3a1 1 0 0 1 0-2h4V4a1 1 0 0 1 2 0v4h4a1 1 0 0 1 1 1z"></path>
-                        </svg>
-                        Like
+                <div class="fb-post-actions">
+                    <div class="fb-reactions">
+                    <i class="fas fa-thumbs-up">
+                    </i>
+                    20
                     </div>
-                    <div class="s1-action">
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" width="16" height="16" fill="#65676B">
-                            <path d="M8 1a7 7 0 0 0-7 7c0 1.668.5 3.218 1.36 4.52L1 15l2.48-2.36A6.96 6.96 0 0 0 8 15a7 7 0 0 0 0-14zm0 13a6 6 0 1 1 0-12 6 6 0 0 1 0 12z"></path>
-                        </svg>
-                        Comment
+                    <div class="fb-comments-shares">
+                    16 comments   1 share
                     </div>
-                    <div class="s1-action">
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" width="16" height="16" fill="#65676B">
-                            <path d="M12 4a1 1 0 0 1 1 1v6a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V5a1 1 0 0 1 1-1h8zm0-2H4a3 3 0 0 0-3 3v6a3 3 0 0 0 3 3h8a3 3 0 0 0 3-3V5a3 3 0 0 0-3-3z"></path>
-                        </svg>
-                        Share
-                    </div>
+                </div>
+                <div class="fb-post-buttons">
+                    <button>
+                    <i class="far fa-thumbs-up">
+                    </i>
+                    Like
+                    </button>
+                    <button>
+                    <i class="far fa-comment">
+                    </i>
+                    Comment
+                    </button>
+                    <button>
+                    <i class="far fa-paper-plane">
+                    </i>
+                    Send
+                    </button>
+                    <button>
+                    <i class="fas fa-share">
+                    </i>
+                    Share
+                    </button>
                 </div>
             </div>
-            <div id="fb-preview-loading-section" class="">
+            <!-- <div id="fb-preview-loading-section" class="">
                 <div class="loader-wrapper">
                     <div class="loader"></div>
                 </div>
                 <div class="message">Uploading Post... Please Wait!</div>
             </div>
-            <div id="fb-preview-button" class="hidden"></div>
-        </div>
-        <!-- Instagram Post -->
-        <div>
-            <h3 class="s1-header">
-                <i class="fab fa-instagram" style="color: #E1306C;"></i>
-                Instagram Post
-            </h3>
-            <div class="s1-social-post s1-instagram-post">
-                <div class="s1-post-header">
-                    <img src="https://ladiesstyleclothes.wordpress.com/wp-content/uploads/2015/12/cimb-logo.png" alt="Profile" class="s1-profile-pic">
-                    <div class="s1-user-info">
-                        <div class="s1-username">CIMB</div>
-                        <div class="s1-post-time">Just Now</div>
-                    </div>
-                    <!-- <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="#262626">
-                        <path d="M12 10a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm-5 2a5 5 0 1 1 10 0 5 5 0 0 1-10 0zm5-7a7 7 0 1 0 0 14 7 7 0 0 0 0-14z"></path>
-                    </svg> -->
-                </div>
-
-                <div id="ig-video-loading-section">
-                    <div class="loader-wrapper">
-                        <div class="loader"></div>
-                    </div>
-                    <div class="message">Loading Short Video... Please Wait!</div>
-                </div>
-
-                <div id="ig-video-section" class="hidden">
-                </div>
-                
-                <div class="s1-post-actions">
-                    <div class="s1-action">
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="#262626">
-                            <path d="M16.792 3.904A4.959 4.959 0 0 1 21 8.027v7.828a5.5 5.5 0 0 1-5.5 5.5H8.5a5.5 5.5 0 0 1-5.5-5.5V8.027a4.959 4.959 0 0 1 4.208-4.123 4.96 4.96 0 0 1 4.792 4.123 4.96 4.96 0 0 1 4.792-4.123zM12 7.027a2.5 2.5 0 1 0 0 5 2.5 2.5 0 0 0 0-5z"></path>
-                        </svg>
-                    </div>
-                    <div class="s1-action">
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="#262626">
-                            <path d="M20.656 17.008a9.993 9.993 0 1 0-3.59 3.615L22 22l-1.344-4.992z"></path>
-                        </svg>
-                    </div>
-                    <div class="s1-action">
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="#262626">
-                            <path d="M8 5v14l11-7L8 5z"></path>
-                        </svg>
-                    </div>
-                    <div class="s1-action" style="margin-left: auto;">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="#262626" viewBox="0 0 24 24">
-                            <path d="M6 2C4.89543 2 4 2.89543 4 4V20.382C4 21.2697 5.07714 21.7305 5.70711 21.1213L12 15.4142L18.2929 21.1213C18.9229 21.7305 20 21.2697 20 20.382V4C20 2.89543 19.1046 2 18 2H6Z" />
-                        </svg>
-                    </div>
-                </div>
-                
-                <div class="s1-likes-comments">
-                    <div class="s1-likes-count">1,234 likes</div>
-                    <div class="s1-post-content">
-                        <strong>CIMB</strong> 
-                        <div id="ig-caption-loading-section" class="">
-                            <div class="loader-wrapper">
-                                <div class="loader"></div>
-                            </div>
-                            <div class="message">Loading Caption... Please Wait!</div>
-                        </div>
-                        <div id="ig-caption-section" class="hidden">
-                        </div>
-                    </div>
-                    <div style="color: #8e8e8e;">View all 42 comments</div>
-                </div>
-            </div>
-            <div id="ig-preview-loading-section" class="">
-                <div class="loader-wrapper">
-                    <div class="loader"></div>
-                </div>
-                <div class="message">Uploading Post... Please Wait!</div>
-            </div>
-            <div id="ig-preview-button" class="hidden"></div>
+            <div id="fb-preview-button" class="hidden"></div> -->
         </div>
         <!-- LinkedIn Post -->
         <div>
@@ -435,16 +662,26 @@
                 </svg>
                 LinkedIn Post
             </h3>
-            <div class="s1-social-post s1-linkedin-post">
-                <div class="s1-post-header">
-                    <img src="https://ladiesstyleclothes.wordpress.com/wp-content/uploads/2015/12/cimb-logo.png" alt="Profile" class="s1-profile-pic">
-                    <div class="s1-user-info">
-                        <div class="s1-username">CIMB</div>
-                        <div class="s1-post-time">Marketing Director • Just Now</div>
+            <div class="s1-social-post">
+                <div class="post-header">
+                    <img alt="Profile" class="fb-profile-img" height="48" src="https://ladiesstyleclothes.wordpress.com/wp-content/uploads/2015/12/cimb-logo.png" width="48"/>
+                    <div class="profile-info">
+                    <span class="lin-profile-name">
+                    CIMB Malaysia
+                    </span>
+                    <span class="profile-followers">
+                    25,814 followers
+                    </span>
+                    <span class="profile-meta">
+                    Just Now
+                    <i class="fas fa-globe-americas">
+                    </i>
+                    </span>
                     </div>
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="#666666">
-                        <path d="M12 10a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm-5 2a5 5 0 1 1 10 0 5 5 0 0 1-10 0zm5-7a7 7 0 1 0 0 14 7 7 0 0 0 0-14z"></path>
-                    </svg>
+                    <div class="post-options">
+                    <i class="fas fa-ellipsis-h">
+                    </i>
+                    </div>
                 </div>
 
                 <div id="linkedIn-caption-loading-section">
@@ -455,71 +692,169 @@
                 </div>
                 <div id="linkedIn-caption-section" class="s1-post-content hidden">
                 </div>
-
+                
                 <div id="linkedIn-image-loading-section">
                     <div class="loader-wrapper">
                         <div class="loader"></div>
                     </div>
                     <div class="message">Loading Image... Please Wait!</div>
                 </div>
-                <div id="linkedIn-image-section" class="hidden">
+                <div id="linkedIn-image-section" class="post-image-section hidden">
                 </div>
 
-                <div class="s1-likes-comments">
-                    <div class="s1-likes-count">245 • 42 comments</div>
+                <div class="post-footer">
+                    <div class="reactions">
+                    <i class="fas fa-thumbs-up">
+                    </i>
+                    <i class="fas fa-heart">
+                    </i>
+                    <i class="fas fa-hands-clapping">
+                    </i>
+                    <span style="color:#fff; font-weight:500; margin-left:2px;">
+                    1,829
+                    </span>
+                    </div>
+                    <div class="right-info">
+                    <span>
+                    197 comments
+                    </span>
+                    <span class="dot">
+                    •
+                    </span>
+                    <span>
+                    105 reposts
+                    </span>
+                    </div>
                 </div>
-                
-                <div class="s1-post-actions">
-                    <div class="s1-action">
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="#666666">
-                            <path d="M19.46 11l-3.91-3.91a7 7 0 0 1-9.9 0L4.54 11a9 9 0 0 0 14.92 0zM12 4.53L14.47 7a7 7 0 0 1-4.94 0L12 4.53z"></path>
-                        </svg>
-                        Like
+                <div class="post-actions-bar">
+                    <div class="post-action">
+                    <i class="far fa-thumbs-up">
+                    </i>
+                    <span>
+                    Like
+                    </span>
                     </div>
-                    <div class="s1-action">
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="#666666">
-                            <path d="M12 3c-4.97 0-9 3.185-9 7.115 0 2.557 1.522 4.82 3.889 6.115l-.78 2.77 3.116-1.65c.88.275 1.823.425 2.775.425 4.97 0 9-3.186 9-7.115C21 6.186 16.97 3 12 3z"></path>
-                        </svg>
-                        Comment
+                    <div class="post-action">
+                    <i class="far fa-comment-dots">
+                    </i>
+                    <span>
+                    Comment
+                    </span>
                     </div>
-                    <div class="s1-action">
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="#666666">
-                            <path d="M17 8h2a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V9a1 1 0 0 1 1-1h2V6a6 6 0 1 1 12 0v2zM7 10v10h10V10H7zm6-4a4 4 0 0 0-4 4h8a4 4 0 0 0-4-4z"></path>
-                        </svg>
-                        Repost
+                    <div class="post-action">
+                    <i class="fas fa-retweet">
+                    </i>
+                    <span>
+                    Repost
+                    </span>
                     </div>
-                    <div class="s1-action">
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="#666666">
-                            <path d="M17 8h2a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V9a1 1 0 0 1 1-1h2V6a6 6 0 1 1 12 0v2zM7 10v10h10V10H7zm6-4a4 4 0 0 0-4 4h8a4 4 0 0 0-4-4z"></path>
-                        </svg>
-                        Send
+                    <div class="post-action">
+                    <i class="fas fa-paper-plane">
+                    </i>
+                    <span>
+                    Send
+                    </span>
                     </div>
                 </div>
             </div>
-            <div id="linkedIn-preview-loading-section" class="">
+            <!-- <div id="linkedIn-preview-loading-section" class="">
                 <div class="loader-wrapper">
                     <div class="loader"></div>
                 </div>
                 <div class="message">Uploading Post... Please Wait!</div>
             </div>
-            <div id="linkedIn-preview-button" class="hidden"></div>
+            <div id="linkedIn-preview-button" class="hidden"></div> -->
+        </div>
+        <!-- Instagram Post -->
+        <div>
+            <h3 class="s1-header">
+                <i class="fab fa-instagram" style="color: #E1306C;"></i>
+                Instagram Post
+            </h3>
+            <div class="s1-social-post">
+                <div class="insta-header">
+                    <img alt="Profile" class="fb-profile-img" height="40" src="https://ladiesstyleclothes.wordpress.com/wp-content/uploads/2015/12/cimb-logo.png" width="40"/>
+                    <div class="fb-profile-details">
+                        <div class="fb-profile-name">
+                            CIMB Malaysia
+                            <i class="fas fa-check-circle">
+                            </i>
+                        </div>
+                    </div>
+                    <div class="post-options">
+                        <i class="fas fa-ellipsis-h">
+                        </i>
+                    </div>
+                </div>
+
+                <div id="ig-video-loading-section">
+                    <div class="loader-wrapper">
+                        <div class="loader"></div>
+                    </div>
+                    <div class="message">Loading Short Video... Please Wait!</div>
+                </div>
+                <div id="ig-video-section" class="hidden">
+                </div>
+                
+                <div class="insta-actions">
+                    <i class="far fa-heart">
+                    </i>
+                    <span class="like-count">
+                        14
+                    </span>
+                    <i class="far fa-comment">
+                    </i>
+                    <i class="far fa-paper-plane">
+                    </i>
+                    <div class="spacer">
+                    </div>
+                    <i class="far fa-bookmark">
+                    </i>
+                </div>
+                <div id="ig-profile-name-section" class="insta-caption">
+                    <span class="ig-profile-name">
+                        cimbmalaysia
+                    </span>
+                </div>
+                <div id="ig-caption-loading-section" class="">
+                    <div class="loader-wrapper">
+                        <div class="loader"></div>
+                    </div>
+                    <div class="message">Loading Caption... Please Wait!</div>
+                </div>
+                <div class="insta-caption hidden" id="ig-caption-section">
+                    
+                </div>
+                <div class="insta-date hidden" id="ig-date-section">
+                    Just Now
+                </div>
+            </div>
+            <!-- <div id="ig-preview-loading-section" class="">
+                <div class="loader-wrapper">
+                    <div class="loader"></div>
+                </div>
+                <div class="message">Uploading Post... Please Wait!</div>
+            </div>
+            <div id="ig-preview-button" class="hidden"></div> -->
         </div>
     </div>
 
     <script type="module">
         const fbCaptionSection = document.getElementById('fb-caption-section');
         const igCaptionSection = document.getElementById('ig-caption-section');
+        const igProfileNameSection = document.getElementById('ig-profile-name-section');
+        const igDateSection = document.getElementById('ig-date-section');
         const linkedInCaptionSection = document.getElementById('linkedIn-caption-section');
-        const fbPreviewSection = document.getElementById('fb-preview-button');
-        const igPreviewSection = document.getElementById('ig-preview-button');
-        const linkedInPreviewSection = document.getElementById('linkedIn-preview-button');
+        // const fbPreviewSection = document.getElementById('fb-preview-button');
+        // const igPreviewSection = document.getElementById('ig-preview-button');
+        // const linkedInPreviewSection = document.getElementById('linkedIn-preview-button');
 
         const fbCaptionLoadingSection = document.getElementById('fb-caption-loading-section');
         const igCaptionLoadingSection = document.getElementById('ig-caption-loading-section');
         const linkedInCaptionLoadingSection = document.getElementById('linkedIn-caption-loading-section');
-        const fbPreviewLoadingSection = document.getElementById('fb-preview-loading-section');
-        const igPreviewLoadingSection = document.getElementById('ig-preview-loading-section');
-        const linkedInPreviewLoadingSection = document.getElementById('linkedIn-preview-loading-section');
+        // const fbPreviewLoadingSection = document.getElementById('fb-preview-loading-section');
+        // const igPreviewLoadingSection = document.getElementById('ig-preview-loading-section');
+        // const linkedInPreviewLoadingSection = document.getElementById('linkedIn-preview-loading-section');
 
         const fbImageSection = document.getElementById('fb-image-section');
         const igVideoSection = document.getElementById('ig-video-section');
@@ -531,10 +866,10 @@
         const loaded = {
             captions: false,
             images: false,
-            videos: false,
-            previewFb: false,
-            previewIg: false,
-            previewLinkedIn: false
+            videos: false
+            // previewFb: false,
+            // previewIg: false,
+            // previewLinkedIn: false
         };
 
         async function pollStatus() {
@@ -543,9 +878,9 @@
             const requests = [];
 
             if (!loaded.captions) requests.push(fetch('/api/captions'));
-            if (!loaded.previewFb) requests.push(fetch('/api/preview-fb'));
-            if (!loaded.previewIg) requests.push(fetch('/api/preview-ig'));
-            if (!loaded.previewLinkedIn) requests.push(fetch('/api/preview-linkedIn'));
+            // if (!loaded.previewFb) requests.push(fetch('/api/preview-fb'));
+            // if (!loaded.previewIg) requests.push(fetch('/api/preview-ig'));
+            // if (!loaded.previewLinkedIn) requests.push(fetch('/api/preview-linkedIn'));
             if (!loaded.images) requests.push(fetch('/api/images'));
             if (!loaded.videos) requests.push(fetch('/api/videos'));
             
@@ -562,7 +897,12 @@
                         <p>${caption.facebook}</p>
                     `;
                     igCaptionSection.innerHTML = `
-                        <p>${caption.instagram}</p>
+                        <span class="ig-profile-name">
+                            cimbmalaysia
+                        </span>
+                        <span>
+                            ${caption.instagram}
+                        </span>
                     `;
                     linkedInCaptionSection.innerHTML = `
                         <p>${caption.linkedin}</p>
@@ -573,56 +913,60 @@
                     fbCaptionLoadingSection.classList.add('hidden');
                     igCaptionLoadingSection.classList.add('hidden');
                     linkedInCaptionLoadingSection.classList.add('hidden');
+
+                    igDateSection.classList.remove('hidden');
+                    igProfileNameSection.classList.add('hidden');
+
                     loaded.captions = true;
                 } else {
                 needsRetry = true;
                 }
             }
 
-            if (!loaded.previewFb) {
-                const data2 = data[i++];
-                if (data2.length > 0) {
-                    const previewFb = data2[0];
-                    fbPreviewSection.innerHTML = `
-                        <a href="${previewFb.facebook_url}" target="_blank" class="s1-preview-button">Preview on Facebook</a>
-                    `;
-                    fbPreviewSection.classList.remove('hidden');
-                    fbPreviewLoadingSection.classList.add('hidden');
-                    loaded.previewFb = true;
-                } else {
-                needsRetry = true;
-                }
-            }
+            // if (!loaded.previewFb) {
+            //     const data2 = data[i++];
+            //     if (data2.length > 0) {
+            //         const previewFb = data2[0];
+            //         fbPreviewSection.innerHTML = `
+            //             <a href="${previewFb.facebook_url}" target="_blank" class="s1-preview-button">Preview on Facebook</a>
+            //         `;
+            //         fbPreviewSection.classList.remove('hidden');
+            //         fbPreviewLoadingSection.classList.add('hidden');
+            //         loaded.previewFb = true;
+            //     } else {
+            //     needsRetry = true;
+            //     }
+            // }
 
-            if (!loaded.previewIg) {
-                const data3 = data[i++];
-                if (data3.length > 0) {
-                    const previewLink = data3[0];
-                    igPreviewSection.innerHTML = `
-                        <a href="${previewLink.instagram_url}" target="_blank" class="s1-preview-button">Preview on Instagram</a>
-                    `;
-                    igPreviewSection.classList.remove('hidden');
-                    igPreviewLoadingSection.classList.add('hidden');
-                    loaded.previewIg = true;
-                } else {
-                needsRetry = true;
-                }
-            }
+            // if (!loaded.previewIg) {
+            //     const data3 = data[i++];
+            //     if (data3.length > 0) {
+            //         const previewLink = data3[0];
+            //         igPreviewSection.innerHTML = `
+            //             <a href="${previewLink.instagram_url}" target="_blank" class="s1-preview-button">Preview on Instagram</a>
+            //         `;
+            //         igPreviewSection.classList.remove('hidden');
+            //         igPreviewLoadingSection.classList.add('hidden');
+            //         loaded.previewIg = true;
+            //     } else {
+            //     needsRetry = true;
+            //     }
+            // }
 
-            if (!loaded.previewLinkedIn) {
-                const data4 = data[i++];
-                if (data4.length > 0) {
-                    const previewLink = data4[0];
-                    linkedInPreviewSection.innerHTML = `
-                        <a href="${previewLink.linkedin_url}" target="_blank" class="s1-preview-button">Preview on LinkedIn</a>
-                    `;
-                    linkedInPreviewSection.classList.remove('hidden');
-                    linkedInPreviewLoadingSection.classList.add('hidden');
-                    loaded.previewLinkedIn = true;
-                } else {
-                needsRetry = true;
-                }
-            }
+            // if (!loaded.previewLinkedIn) {
+            //     const data4 = data[i++];
+            //     if (data4.length > 0) {
+            //         const previewLink = data4[0];
+            //         linkedInPreviewSection.innerHTML = `
+            //             <a href="${previewLink.linkedin_url}" target="_blank" class="s1-preview-button">Preview on LinkedIn</a>
+            //         `;
+            //         linkedInPreviewSection.classList.remove('hidden');
+            //         linkedInPreviewLoadingSection.classList.add('hidden');
+            //         loaded.previewLinkedIn = true;
+            //     } else {
+            //     needsRetry = true;
+            //     }
+            // }
 
             if (!loaded.images) {
                 const data5 = data[i++];
@@ -649,7 +993,7 @@
                 if (data6.length > 0) {
                     const video = data6[0];
                     igVideoSection.innerHTML = `
-                        <video autoplay loop muted playsinline width="100%" height="360">
+                        <video autoplay loop muted playsinline width="100%" height="100%">
                         <source src="${video.video_url}" type="video/mp4">
                         Your browser does not support the video tag.
                         </video>
@@ -666,15 +1010,6 @@
                 setTimeout(pollStatus, 2000);
             }
         }
-
-        const intervalId = setInterval(() => {
-            console.log('Running slide 1 logic...');
-        }, 1000);
-
-        window.cleanupSlide = () => {
-            clearInterval(intervalId);
-            console.log('Cleaned up slide 1');
-        };
 
         pollStatus();
     </script>

@@ -1,523 +1,151 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
+  <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Gen AI Demo - Assets</title>
+  <title>Ad Short Video</title>
   <style>
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
-
     .s4-container {
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      gap: 20px;
-      max-width: 1400px;
-      margin: 0 auto;
-      padding: 20px;
+        /* display: flex; */
+        /* flex-wrap: nowrap; */
+        justify-content: center;
+        gap: 20px;
+        /* max-width: 1400px; */
+        margin: 0 auto;
     }
-
     .s4-header {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-      font-size: 18px;
-      font-weight: bold;
-      color: #333;
-      background-color: white;
-      padding: 8px 16px;
-      border-radius: 6px;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-      width: fit-content;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        font-size: 18px;
+        margin: 10px auto;
+        padding: 8px 16px;
+        background-color: white;
+        color: black;
+        text-align: center;
+        text-decoration: none;
+        border-radius: 6px;
+        font-weight: bold;
+        width: fit-content;
     }
 
-    /* Leaderboard Column (always vertical) */
-    .leaderboard-column {
-      display: flex;
-      flex-direction: row;
-      align-items: center;
-      gap: 12px;
-      width: 100%;
-      /* border: 2px solid black; */
+    .s4-section {
+        background: white;
+        padding: 24px;
+        border-radius: 8px;
+        box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+        margin-bottom: 30px auto;
+        max-width: 800px;
     }
 
-    .leaderboard-column .template {
-      width: 100%;
-      max-width: 728px;
-      height: auto;
-      background-color: #1877F2;
-      color: white;
-      text-align: center;
-      padding: 12px;
-      border-radius: 6px;
-      font-weight: bold;
-      font-size: 14px;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    video {
+        width: 100%;
+        height: auto;
     }
 
-    /* Main Row: Billboards (left) + Half Pages (right) */
-    .main-row {
-      display: flex;
-      justify-content: center;
-      gap: 20px;
-      width: 100%;
-    }
-
-    .sub-column {
-      display: flex;
-      flex-wrap: wrap;
-      flex-direction: column;
-      justify-content: center;
-      width: 100%;
-    }
-
-    .billboard-column{
-      display: flex;
-      flex-direction: column;
-      gap: 20px;
-      flex: 1;
-      min-width: 200px;
-      justify-content: center;
-      /* border: 2px solid black; */
-    }
-
-    .half-page-column {
-      display: flex;
-      flex-direction: row;
-      gap: 20px;
-      flex: 1;
-      min-width: 200px;
-      justify-content: center;
-      /* border: 2px solid black; */
+    .slide-inner {
+        max-width: 768px;
+        margin: 0 auto;
+        padding: 0 40px;
+        width: 100%;
+        text-align: center;
     }
 
     .loader-wrapper {
-      display: flex;
-      justify-content: center;
+        display: flex;
+        justify-content: center;
     }
     .loader {
-      border: 8px solid #f3f3f3;
-      border-top: 8px solid #007bff;
-      border-radius: 50%;
-      width: 60px;
-      height: 60px;
-      animation: spin 1s linear infinite;
+        border: 8px solid #f3f3f3;
+        border-top: 8px solid #007bff;
+        border-radius: 50%;
+        width: 60px;
+        height: 60px;
+        animation: spin 1s linear infinite;
     }
     @keyframes spin {
-      0% { transform: rotate(0deg); }
-      100% { transform: rotate(360deg); }
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
     }
     .message {
-      text-align: center;
-      font-size: 18px;
-      margin-bottom: 30px;
+        text-align: center;
+        font-size: 18px;
+        margin-bottom: 30px;
     }
     .hidden {
-      display: none !important;
-    }
-    #wait-node-section {
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      height: 100%;
-    }
-
-    .template {
-      width: 100%;
-      max-width: 970px;
-      height: auto;
-      background-color: #4CAF50;
-      color: white;
-      text-align: center;
-      padding: 12px;
-      border-radius: 6px;
-      font-weight: bold;
-      font-size: 14px;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-    }
-
-    .half-page-column .template {
-      width: 100%;
-      max-width: 300px;
-      height: auto;
-      background-color: #FF9800;
-      color: white;
-      text-align: center;
-      padding: 12px;
-      border-radius: 6px;
-      font-weight: bold;
-      font-size: 14px;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-    }
-
-    .template img {
-        display: block;
-        width: 100%;
-        height: auto;
-        border-radius: 6px;
-    }
-
-
-    @media (max-width: 900px) {
-        .main-row {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: 20px;
-            width: 100%;
-        }
-
-        .sub-column {
-            display: flex;
-            flex-wrap: wrap;
-            flex-direction: row;
-            justify-content: center;
-            width: 100%;
-        }
-
-        .billboard-column,
-        .half-page-column {
-            flex: 1 1 100%;
-            min-width: 300px;
-        }
-
-        .leaderboard-column {
-            flex-direction: column;
-            align-items: center;
-        }
-        .half-page-column {
-            flex-direction: column;
-            align-items: center;
-        }
-    }
-    .section-heading {
-        text-align: center;
+        display: none;
     }
   </style>
 </head>
 <body>
-  <div class="s4-container">
-    <h3 class="s4-header">
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="black" stroke-width="2" xmlns="http://www.w3.org/2000/svg">
-        <!-- Document outline -->
-        <rect x="3" y="3" width="18" height="18" rx="2" ry="2" stroke="black" fill="none"/>
-        
-        <!-- Image placeholder (square) -->
-        <rect x="6" y="6" width="6" height="6" fill="#1877F2" stroke="none"/>
-        
-        <!-- Text lines -->
-        <line x1="14" y1="6" x2="18" y2="6" stroke="black" />
-        <line x1="14" y1="9" x2="18" y2="9" stroke="black" />
-        <line x1="6" y1="14" x2="18" y2="14" stroke="black" />
-        <line x1="6" y1="17" x2="18" y2="17" stroke="black" />
-        </svg>
-
-      Ad Template Assets
-    </h3>
-      <!-- LEADERBOARD COLUMN -->
-        <div class="section-heading">
-            <h3>
-                Leaderboard 728 x 90px
-            </h3>
-            <div class="leaderboard-column">
-                <div class="template">
-                  <div id="leaderboard-1-loading-section">
-                    <div class="loader-wrapper">
-                        <div class="loader"></div>
-                    </div>
-                    <div class="message">Loading Leaderboard... Please Wait!</div>
-                  </div>
-                  <div id="leaderboard-1-section" class="hidden"></div>
+    <div class="s4-container">
+        <h3 class="s4-header">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="black" stroke-width="2" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="12" cy="12" r="10" />
+                <polygon points="10,8 16,12 10,16" fill="#1877F2" stroke="none" />
+            </svg>
+            Short Video for Social Post
+        </h3>
+        <div class="slide-inner">
+            <div class="s4-section">
+                <div id="video-section" class="hidden">
                 </div>
-                <div class="template">
-                  <div id="leaderboard-2-loading-section">
+                <div id="video-loading-section">
                     <div class="loader-wrapper">
                         <div class="loader"></div>
                     </div>
-                    <div class="message">Loading Leaderboard... Please Wait!</div>
-                  </div>
-                  <div id="leaderboard-2-section" class="hidden"></div>
-                </div>
-                <div class="template">
-                  <div id="leaderboard-3-loading-section">
-                    <div class="loader-wrapper">
-                        <div class="loader"></div>
-                    </div>
-                    <div class="message">Loading Leaderboard... Please Wait!</div>
-                  </div>
-                  <div id="leaderboard-3-section" class="hidden"></div>
+                    <div class="message">Loading Short Video... Please Wait!</div>
                 </div>
             </div>
         </div>
+    </div>
+    <script type="module">
 
-        <!-- MAIN ROW -->
-        <div class="main-row">
-            <!-- BILLBOARD COLUMN -->
-            <div class="sub-column">
-                <h3>
-                    Billboard 970 x 250px
-                </h3>
-                <div class="billboard-column">
-                    <div class="template">
-                      <div id="billboard-1-loading-section">
-                        <div class="loader-wrapper">
-                            <div class="loader"></div>
-                        </div>
-                        <div class="message">Loading Billboard... Please Wait!</div>
-                      </div>
-                      <div id="billboard-1-section" class="hidden"></div>
-                    </div>
-                    <div class="template">
-                      <div id="billboard-2-loading-section">
-                        <div class="loader-wrapper">
-                            <div class="loader"></div>
-                        </div>
-                        <div class="message">Loading Billboard... Please Wait!</div>
-                      </div>
-                      <div id="billboard-2-section" class="hidden"></div>
-                    </div>
-                    <div class="template">
-                      <div id="billboard-3-loading-section">
-                        <div class="loader-wrapper">
-                            <div class="loader"></div>
-                        </div>
-                        <div class="message">Loading Billboard... Please Wait!</div>
-                      </div>
-                      <div id="billboard-3-section" class="hidden"></div>
-                    </div>
-                </div>
-            </div>
+        const videoSection = document.getElementById('video-section');
+        const videoLoadingSection = document.getElementById('video-loading-section');
 
-            <!-- HALF-PAGE COLUMN -->
-            <div class="sub-column">
-                <h3>
-                    Half Page 300 x 600px
-                </h3>
-                <div class="half-page-column">
-                    <div class="template">
-                      <div id="halfpage-1-loading-section">
-                        <div class="loader-wrapper">
-                            <div class="loader"></div>
-                        </div>
-                        <div class="message">Loading Half Page... Please Wait!</div>
-                      </div>
-                      <div id="halfpage-1-section" class="hidden"></div>
-                    </div>
-                    <div class="template">
-                      <div id="halfpage-2-loading-section">
-                        <div class="loader-wrapper">
-                            <div class="loader"></div>
-                        </div>
-                        <div class="message">Loading Half Page... Please Wait!</div>
-                      </div>
-                      <div id="halfpage-2-section" class="hidden"></div>
-                    </div>
-                    <div class="template">
-                      <div id="halfpage-3-loading-section">
-                        <div class="loader-wrapper">
-                            <div class="loader"></div>
-                        </div>
-                        <div class="message">Loading Half Page... Please Wait!</div>
-                      </div>
-                      <div id="halfpage-3-section" class="hidden"></div>
-                    </div>
-                </div>
-            </div>
-        </div>
-  </div>
-  <script type="module">
-    const leaderBoard1Section = document.getElementById('leaderboard-1-section');
-    const leaderBoard2Section = document.getElementById('leaderboard-2-section');
-    const leaderBoard3Section = document.getElementById('leaderboard-3-section');
-    const leaderBoard1LoadingSection = document.getElementById('leaderboard-1-loading-section');
-    const leaderBoard2LoadingSection = document.getElementById('leaderboard-2-loading-section');
-    const leaderBoard3LoadingSection = document.getElementById('leaderboard-3-loading-section');
+        const loaded = {
+            videos: false
+        };
 
-    const billBoard1Section = document.getElementById('billboard-1-section');
-    const billBoard2Section = document.getElementById('billboard-2-section');
-    const billBoard3Section = document.getElementById('billboard-3-section');
-    const billBoard1LoadingSection = document.getElementById('billboard-1-loading-section');
-    const billBoard2LoadingSection = document.getElementById('billboard-2-loading-section');
-    const billBoard3LoadingSection = document.getElementById('billboard-3-loading-section');
+        async function pollStatus() {
+            let needsRetry = false;
 
-    const halfPage1Section = document.getElementById('halfpage-1-section');
-    const halfPage2Section = document.getElementById('halfpage-2-section');
-    const halfPage3Section = document.getElementById('halfpage-3-section');
-    const halfPage1LoadingSection = document.getElementById('halfpage-1-loading-section');
-    const halfPage2LoadingSection = document.getElementById('halfpage-2-loading-section');
-    const halfPage3LoadingSection = document.getElementById('halfpage-3-loading-section');
+            const requests = [];
 
-    const loaded = {
-      leaderBoard1: false,
-      leaderBoard2: false,
-      leaderBoard3: false,
-      billBoard1: false,
-      billBoard2: false,
-      billBoard3: false,
-      halfPage1: false,
-      halfPage2: false,
-      halfPage3: false
-    };
+            if (!loaded.videos) requests.push(fetch('/api/videos'));
 
-    async function pollStatus() {
-      let needsRetry = false;
+            const responses = await Promise.all(requests);
+            const data = await Promise.all(responses.map(res => res.json()));
 
-      const requests = [];
+            let i = 0;
 
-      if (!loaded.leaderBoard1) requests.push(fetch('/api/leader-board-1'));
-      if (!loaded.leaderBoard2) requests.push(fetch('/api/leader-board-2'));
-      if (!loaded.leaderBoard3) requests.push(fetch('/api/leader-board-3'));
-      if (!loaded.billBoard1) requests.push(fetch('/api/bill-board-1'));
-      if (!loaded.billBoard2) requests.push(fetch('/api/bill-board-2'));
-      if (!loaded.billBoard3) requests.push(fetch('/api/bill-board-3'));
-      if (!loaded.halfPage1) requests.push(fetch('/api/half-page-1'));
-      if (!loaded.halfPage2) requests.push(fetch('/api/half-page-2'));
-      if (!loaded.halfPage3) requests.push(fetch('/api/half-page-3'));
-
-      const responses = await Promise.all(requests);
-      const data = await Promise.all(responses.map(res => res.json()));
-
-      let i = 0;
-
-      if (!loaded.leaderBoard1) {
-          const data1 = data[i++];
-          if (data1.length > 0) {
-              const leaderBoard1 = data1[0];
-              leaderBoard1Section.innerHTML = `
-                <img src="${leaderBoard1.leaderBoard_1}" alt="Leaderboard 728x90" width="728" height="90" />
-              `;
-              leaderBoard1Section.classList.remove('hidden');
-              leaderBoard1LoadingSection.classList.add('hidden');
-              loaded.leaderBoard1 = true;
-          } else {
-          needsRetry = true;
-          }
-      }
-      if (!loaded.leaderBoard2) {
-          const data2 = data[i++];
-          if (data2.length > 0) {
-              const leaderBoard2 = data2[0];
-              leaderBoard2Section.innerHTML = `
-                <img src="${leaderBoard2.leaderBoard_2}" alt="Leaderboard 728x90" width="728" height="90" />
-              `;
-              leaderBoard2Section.classList.remove('hidden');
-              leaderBoard2LoadingSection.classList.add('hidden');
-              loaded.leaderBoard2 = true;
-          } else {
-          needsRetry = true;
-          }
-      }
-      if (!loaded.leaderBoard3) {
-        const data3 = data[i++];
-        if (data3.length > 0) {
-          const leaderBoard3 = data3[0];
-          leaderBoard3Section.innerHTML = `
-            <img src="${leaderBoard3.leaderBoard_3}" alt="Leaderboard 728x90" width="728" height="90" />
-          `;
-          leaderBoard3Section.classList.remove('hidden');
-          leaderBoard3LoadingSection.classList.add('hidden');
-          loaded.leaderBoard3 = true;
-        } else {
-        needsRetry = true;
+            if (!loaded.videos) {
+                const data1 = data[i++];
+                if (data1.length > 0) {
+                    const video = data1[0];
+                    videoSection.innerHTML = `
+                        <video autoplay loop muted playsinline width="100%" height="100%">
+                        <source src="${video.video_url}" type="video/mp4">
+                        Your browser does not support the video tag.
+                        </video>
+                    `;
+                    videoSection.classList.remove('hidden');
+                    videoLoadingSection.classList.add('hidden');
+                    loaded.videos = true;
+                } else {
+                needsRetry = true;
+                }
+            }
+            
+            if (needsRetry) {
+                setTimeout(pollStatus, 2000);
+            }
         }
-      }
-      if (!loaded.billBoard1) {
-        const data4 = data[i++];
-        if (data4.length > 0) {
-          const billBoard1 = data4[0];
-          billBoard1Section.innerHTML = `
-            <img src="${billBoard1.billBoard_1}" alt="Billboard 970x250" width="970" height="250" />
-          `;
-          billBoard1Section.classList.remove('hidden');
-          billBoard1LoadingSection.classList.add('hidden');
-          loaded.billBoard1 = true;
-        } else {
-        needsRetry = true;
-        }
-      }
-      if (!loaded.billBoard2) {
-        const data5 = data[i++];
-        if (data5.length > 0) {
-          const billBoard2 = data5[0];
-          billBoard2Section.innerHTML = `
-            <img src="${billBoard2.billBoard_2}" alt="Billboard 970x250" width="970" height="250" />
-          `;
-          billBoard2Section.classList.remove('hidden');
-          billBoard2LoadingSection.classList.add('hidden');
-          loaded.billBoard2 = true;
-        } else {
-        needsRetry = true;
-        }
-      }
-      if (!loaded.billBoard3) {
-        const data6 = data[i++];
-        if (data6.length > 0) {
-          const billBoard3 = data6[0];
-          billBoard3Section.innerHTML = `
-            <img src="${billBoard3.billBoard_3}" alt="Billboard 970x250" width="970" height="250" />
-          `;
-          billBoard3Section.classList.remove('hidden');
-          billBoard3LoadingSection.classList.add('hidden');
-          loaded.billBoard3 = true;
-        } else {
-        needsRetry = true;
-        }
-      }
-      if (!loaded.halfPage1) {
-        const data7 = data[i++];
-        if (data7.length > 0) {
-          const halfPage1 = data7[0];
-          halfPage1Section.innerHTML = `
-            <img src="${halfPage1.halfPage_1}" alt="Half Page 300x600" width="300" height="600" />
-          `;
-          halfPage1Section.classList.remove('hidden');
-          halfPage1LoadingSection.classList.add('hidden');
-          loaded.halfPage1 = true;
-        } else {
-        needsRetry = true;
-        }
-      }
-      if (!loaded.halfPage2) {
-        const data8 = data[i++];
-        if (data8.length > 0) {
-          const halfPage2 = data8[0];
-          halfPage2Section.innerHTML = `
-            <img src="${halfPage2.halfPage_2}" alt="Half Page 300x600" width="300" height="600" />
-          `;
-          halfPage2Section.classList.remove('hidden');
-          halfPage2LoadingSection.classList.add('hidden');
-          loaded.halfPage2 = true;
-        } else {
-        needsRetry = true;
-        }
-      }
-      if (!loaded.halfPage3) {
-        const data9 = data[i++];
-        if (data9.length > 0) {
-          const halfPage3 = data9[0];
-          halfPage3Section.innerHTML = `
-            <img src="${halfPage3.halfPage_3}" alt="Half Page 300x600" width="300" height="600" />
-          `;
-          halfPage3Section.classList.remove('hidden');
-          halfPage3LoadingSection.classList.add('hidden');
-          loaded.halfPage3 = true;
-        } else {
-        needsRetry = true;
-        }
-      }
-      if (needsRetry) {
-        setTimeout(pollStatus, 2000);
-      }
-    }
-  pollStatus();
 
-</script>
+        pollStatus();
+
+    </script>
 </body>
 </html>
