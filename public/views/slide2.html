@@ -3,11 +3,8 @@
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Gen AI Demo - Caption</title>
+  <title>Gen AI Demo - Newletter</title>
   <style>
-    body {
-      background-color: #059669;
-    }
     * {
       margin: 0;
       padding: 0;
@@ -19,6 +16,7 @@
       flex-direction: column;
       justify-content: center;
       align-items: center;
+      /* align-items: flex-start; */
       gap: 20px;
       margin: 0 auto;
       padding: 20px;
@@ -48,32 +46,45 @@
       gap: 40px;
     }
 
-    .mobile-preview {
-      width: 375px;
+    .preview-box {
+      flex: 1 1 100%;
+      max-width: 100%;
     }
 
-    .desktop-preview {
-      width: 560px;
+    .preview-box.mobile-preview {
+      max-width: 375px;
+    }
+
+    .preview-box.desktop-preview {
+      max-width: 560px;
     }
 
     iframe {
       width: 100%;
-      height: 660px; /* Adjust as needed */
+      height: 1290px;
       border: none;
     }
 
-    /* Responsive: Stack vertically when screen is narrower than total width */
-    @media (max-width: 1015px) {
+    @media (min-width: 1015px) {
       .preview-container {
-        flex-direction: column;
-        align-items: center;
+        flex-direction: row;
+        align-items: flex-start;
       }
-      iframe {
+
+      .preview-box.mobile-preview {
+        width: 375px;
+      }
+
+      .preview-box.desktop-preview {
+        width: 560px;
+      }
+        iframe {
         width: 100%;
-        height: 1290px; /* Adjust as needed */
+        height: 660px;
         border: none;
       }
     }
+
   </style>
 </head>
 <body>

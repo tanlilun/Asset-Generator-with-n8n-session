@@ -87,6 +87,7 @@ createInMemoryApi('images', '/images', imageData = []);
 // createInMemoryApi('preview-fb', '/preview-fb', previewFbData = []);
 // createInMemoryApi('preview-ig', '/preview-ig', previewIgData = []);
 // createInMemoryApi('preview-linkedIn', '/preview-linkedIn', previewLinkedInData = []);
+createInMemoryApi('canva-titles', '/canva-titles', canvaTitlesData = []);
 createInMemoryApi('email-items', '/email-items', emailData = []);
 createInMemoryApi('videos', '/videos', videoData = []);
 createInMemoryApi('leader-board-1', '/leader-board-1', leaderBoard1Data = []);

@@ -16,8 +16,9 @@
       flex-direction: column;
       justify-content: center;
       align-items: center;
+      /* align-items: flex-start; */
       gap: 20px;
-      max-width: 1400px;
+      /* max-width: 1400px; */
       margin: 0 auto;
       padding: 20px;
     }
@@ -97,26 +98,26 @@
       /* border: 2px solid black; */
     }
 
-    .loader-wrapper {
-      display: flex;
-      justify-content: center;
-    }
-    .loader {
-      border: 8px solid #f3f3f3;
-      border-top: 8px solid #007bff;
-      border-radius: 50%;
-      width: 60px;
-      height: 60px;
-      animation: spin 1s linear infinite;
-    }
-    @keyframes spin {
-      0% { transform: rotate(0deg); }
-      100% { transform: rotate(360deg); }
-    }
     .message {
       text-align: center;
       font-size: 18px;
       margin-bottom: 30px;
+    }
+
+    .message::after {
+      content: '';
+      display: inline-block;
+      animation: dots 3s steps(4, end) infinite;
+      width: 1em;
+      text-align: left;
+    }
+
+    @keyframes dots {
+      0%   { content: ''; }
+      25%  { content: '.'; }
+      50%  { content: '..'; }
+      75%  { content: '...'; }
+      100% { content: ''; }
     }
     .hidden {
       display: none !important;
@@ -229,10 +230,7 @@
             <div class="leaderboard-column">
                 <div class="template">
                   <div id="leaderboard-1-loading-section">
-                    <div class="loader-wrapper">
-                        <div class="loader"></div>
-                    </div>
-                    <div class="message">Loading Leaderboard... Please Wait!</div>
+                    <div class="message">Loading Leaderboard<span></span></div>
                   </div>
                   <div id="leaderboard-1-section" class="hidden"></div>
                   <!-- <div>
@@ -241,10 +239,7 @@
                 </div>
                 <div class="template">
                   <div id="leaderboard-2-loading-section">
-                    <div class="loader-wrapper">
-                        <div class="loader"></div>
-                    </div>
-                    <div class="message">Loading Leaderboard... Please Wait!</div>
+                    <div class="message">Loading Leaderboard<span></span></div>
                   </div>
                   <div id="leaderboard-2-section" class="hidden"></div>
                   <!-- <div>
@@ -253,10 +248,7 @@
                 </div>
                 <div class="template">
                   <div id="leaderboard-3-loading-section">
-                    <div class="loader-wrapper">
-                        <div class="loader"></div>
-                    </div>
-                    <div class="message">Loading Leaderboard... Please Wait!</div>
+                    <div class="message">Loading Leaderboard<span></span></div>
                   </div>
                   <div id="leaderboard-3-section" class="hidden"></div>
                   <!-- <div>
@@ -276,10 +268,7 @@
                 <div class="billboard-column">
                     <div class="template">
                       <div id="billboard-1-loading-section">
-                        <div class="loader-wrapper">
-                            <div class="loader"></div>
-                        </div>
-                        <div class="message">Loading Billboard... Please Wait!</div>
+                        <div class="message">Loading Billboard<span></span></div>
                       </div>
                       <div id="billboard-1-section" class="hidden"></div>
                       <!-- <div>
@@ -288,10 +277,7 @@
                     </div>
                     <div class="template">
                       <div id="billboard-2-loading-section">
-                        <div class="loader-wrapper">
-                            <div class="loader"></div>
-                        </div>
-                        <div class="message">Loading Billboard... Please Wait!</div>
+                        <div class="message">Loading Billboard<span></span></div>
                       </div>
                       <div id="billboard-2-section" class="hidden"></div>
                       <!-- <div>
@@ -300,10 +286,7 @@
                     </div>
                     <div class="template">
                       <div id="billboard-3-loading-section">
-                        <div class="loader-wrapper">
-                            <div class="loader"></div>
-                        </div>
-                        <div class="message">Loading Billboard... Please Wait!</div>
+                        <div class="message">Loading Billboard<span></span></div>
                       </div>
                       <div id="billboard-3-section" class="hidden"></div>
                       <!-- <div>
@@ -321,10 +304,7 @@
                 <div class="half-page-column">
                     <div class="template">
                       <div id="halfpage-1-loading-section">
-                        <div class="loader-wrapper">
-                            <div class="loader"></div>
-                        </div>
-                        <div class="message">Loading Half Page... Please Wait!</div>
+                        <div class="message">Loading Half Page<span></span></div>
                       </div>
                       <div id="halfpage-1-section" class="hidden"></div>
                       <!-- <div>
@@ -333,10 +313,7 @@
                     </div>
                     <div class="template">
                       <div id="halfpage-2-loading-section">
-                        <div class="loader-wrapper">
-                            <div class="loader"></div>
-                        </div>
-                        <div class="message">Loading Half Page... Please Wait!</div>
+                        <div class="message">Loading Half Page<span></span></div>
                       </div>
                       <div id="halfpage-2-section" class="hidden"></div>
                       <!-- <div>
@@ -345,10 +322,7 @@
                     </div>
                     <div class="template">
                       <div id="halfpage-3-loading-section">
-                        <div class="loader-wrapper">
-                            <div class="loader"></div>
-                        </div>
-                        <div class="message">Loading Half Page... Please Wait!</div>
+                        <div class="message">Loading Half Page<span></span></div>
                       </div>
                       <div id="halfpage-3-section" class="hidden"></div>
                       <!-- <div>

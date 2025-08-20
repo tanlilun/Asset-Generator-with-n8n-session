@@ -16,26 +16,26 @@ img { border: 0; line-height: 100%; outline: none; text-decoration: none; -ms-in
 #outlook a { padding: 0; }
 .ReadMsgBody { width: 100%; } .ExternalClass { width: 100%; }
 .ExternalClass, .ExternalClass p, .ExternalClass span, .ExternalClass font, .ExternalClass td, .ExternalClass div { line-height: 100%; }
-.loader-wrapper {
-	display: flex;
-	justify-content: center;
-}
-.loader {
-	border: 8px solid #f3f3f3;
-	border-top: 8px solid #007bff;
-	border-radius: 50%;
-	width: 60px;
-	height: 60px;
-	animation: spin 1s linear infinite;
-}
-@keyframes spin {
-	0% { transform: rotate(0deg); }
-	100% { transform: rotate(360deg); }
-}
 .message {
 	text-align: center;
 	font-size: 18px;
 	margin-bottom: 30px;
+}
+
+.message::after {
+	content: '';
+	display: inline-block;
+	animation: dots 3s steps(4, end) infinite;
+	width: 1em;
+	text-align: left;
+}
+
+@keyframes dots {
+	0%   { content: ''; }
+	25%  { content: '.'; }
+	50%  { content: '..'; }
+	75%  { content: '...'; }
+	100% { content: ''; }
 }
 .hidden {
 	display: none;
@@ -80,10 +80,7 @@ a, a:hover {
 	<!-- Set text color and font family ("sans-serif" or "Georgia, serif") -->
 	<tr id="subject-loading-section" class="">
 		<td>
-			<div class="loader-wrapper">
-				<div class="loader"></div>
-			</div>
-			<div class="message">Loading Subject... Please Wait!</div>
+			<div class="message">Loading Subject<span></span></div>
 		</td>
 	</tr>
 	<tr id="subject-section" class="hidden">
@@ -92,10 +89,7 @@ a, a:hover {
 	<!-- Set text color and font family ("sans-serif" or "Georgia, serif") -->
 	<tr id="headline-loading-section" class="">
 		<td>
-			<div class="loader-wrapper">
-				<div class="loader"></div>
-			</div>
-			<div class="message">Loading Headline... Please Wait!</div>
+			<div class="message">Loading Headline<span></span></div>
 		</td>
 	</tr>
 	<tr id="headline-section" class="hidden">
@@ -105,10 +99,7 @@ a, a:hover {
 	<!-- Image text color should be opposite to background color. Set your url, image src, alt and title. Alt text should fit the image size. Real image size should be x2 (wrapper x2). Do not set height for flexible images (including "auto"). URL format: http://domain.com/?utm_source={{Campaign-Source}}&utm_medium=email&utm_content={{Ìmage-Name}}&utm_campaign={{Campaign-Name}} -->
 	<tr id="image-loading-section" class="">
 		<td>
-			<div class="loader-wrapper">
-				<div class="loader"></div>
-			</div>
-			<div class="message">Loading Image... Please Wait!</div>
+			<div class="message">Loading Image<span></span></div>
 		</td>
 	</tr>
 	<tr id="image-section" class="hidden">
@@ -117,10 +108,7 @@ a, a:hover {
 	<!-- Set text color and font family ("sans-serif" or "Georgia, serif"). Duplicate all text styles in links, including line-height -->
 	<tr id="caption-loading-section" class="">
 		<td>
-			<div class="loader-wrapper">
-				<div class="loader"></div>
-			</div>
-			<div class="message">Loading Caption... Please Wait!</div>
+			<div class="message">Loading Caption<span></span></div>
 		</td>
 	</tr>
 	<tr id="caption-section" class="hidden">
@@ -129,10 +117,7 @@ a, a:hover {
 	<!-- Set button background color at TD, link/text color at A and TD, font family ("sans-serif" or "Georgia, serif") at TD. For verification codes add "letter-spacing: 5px;". Link format: http://domain.com/?utm_source={{Campaign-Source}}&utm_medium=email&utm_content={{Button-Name}}&utm_campaign={{Campaign-Name}} -->
 	<tr id="cta-loading-section" class="">
 		<td>
-			<div class="loader-wrapper">
-				<div class="loader"></div>
-			</div>
-			<div class="message">Loading CTA... Please Wait!</div>
+			<div class="message">Loading CTA<span></span></div>
 		</td>
 	</tr>
 	<tr id="cta-section" class="hidden">
@@ -158,10 +143,7 @@ a, a:hover {
 			<!-- LIST ITEM -->
 			<tr id="point-1-loading-section" class="">
 				<td>
-					<div class="loader-wrapper">
-						<div class="loader"></div>
-					</div>
-					<div class="message">Loading Key Feature 1... Please Wait!</div>
+					<div class="message">Loading Key Feature 1<span></span></div>
 				</td>
 			</tr>
 			<tr id="point-1-section" class="hidden">
@@ -171,10 +153,7 @@ a, a:hover {
 			<!-- LIST ITEM -->
 			<tr id="point-2-loading-section" class="">
 				<td>
-					<div class="loader-wrapper">
-						<div class="loader"></div>
-					</div>
-					<div class="message">Loading Key Feature 2... Please Wait!</div>
+					<div class="message">Loading Key Feature 2<span></span></div>
 				</td>
 			</tr>
 			<tr id="point-2-section" class="hidden">

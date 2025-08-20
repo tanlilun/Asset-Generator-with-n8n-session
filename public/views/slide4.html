@@ -5,12 +5,18 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Ad Short Video</title>
   <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
     .s4-container {
-        /* display: flex; */
-        /* flex-wrap: nowrap; */
+        /* display: flex;
+        flex-wrap: nowrap; */
         justify-content: center;
+        /* align-items: flex-start; */
+        align-items: center;
         gap: 20px;
-        /* max-width: 1400px; */
         margin: 0 auto;
     }
     .s4-header {
@@ -52,30 +58,95 @@
         text-align: center;
     }
 
-    .loader-wrapper {
-        display: flex;
-        justify-content: center;
-    }
-    .loader {
-        border: 8px solid #f3f3f3;
-        border-top: 8px solid #007bff;
-        border-radius: 50%;
-        width: 60px;
-        height: 60px;
-        animation: spin 1s linear infinite;
-    }
-    @keyframes spin {
-        0% { transform: rotate(0deg); }
-        100% { transform: rotate(360deg); }
-    }
     .message {
         text-align: center;
         font-size: 18px;
         margin-bottom: 30px;
     }
+
+    .message::after {
+        content: '';
+        display: inline-block;
+        animation: dots 3s steps(4, end) infinite;
+        width: 1em;
+        text-align: left;
+    }
+
+    @keyframes dots {
+        0%   { content: ''; }
+        25%  { content: '.'; }
+        50%  { content: '..'; }
+        75%  { content: '...'; }
+        100% { content: ''; }
+    }
     .hidden {
         display: none;
     }
+
+    .video-wrapper {
+        position: relative;
+        width: 100%;
+        max-width: 800px;
+        margin: 0 auto;
+    }
+
+
+    .video-wrapper video {
+        width: 100%;
+        height: auto;
+        display: block;
+    }
+
+    .video-overlay {
+        position: absolute;
+        bottom: 10px;
+        left: 0;
+        right: 0;
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-end;
+        padding: 0 20px;
+        pointer-events: none; /* Allows clicks to go through to the video */
+    }
+
+    .overlay-text {
+        position: absolute;
+        bottom: 5%;
+        left: 50%;
+        transform: translateX(-50%);
+        color: white;
+        padding: 0.3em 0.6em;
+        border-radius: 4px;
+        font-size: clamp(16px, 4vw, 36px);
+        font-weight: bold;
+        pointer-events: none;
+
+        text-shadow: 
+            -2px -2px 0 #000,  
+            2px -2px 0 #000,
+            -2px 2px 0 #000,
+            2px 2px 0 #000,
+            0 -2px 0 #000,
+            0 2px 0 #000,
+            -2px 0 0 #000,
+            2px 0 0 #000;
+    }
+
+    .overlay-img {
+        width: clamp(50px, 10vw, 100px);
+        height: auto;
+        object-fit: contain;
+        pointer-events: none;
+    }
+
+    .left-img {
+        align-self: flex-end;
+    }
+
+    .right-img {
+        align-self: flex-end;
+    }
+
   </style>
 </head>
 <body>
@@ -89,13 +160,23 @@
         </h3>
         <div class="slide-inner">
             <div class="s4-section">
-                <div id="video-section" class="hidden">
+                <div class="video-wrapper">
+                    <div id="video-section" class="hidden">
+                        <!-- <video autoplay loop muted playsinline width="100%" height="100%">
+                        <source src="https://v3.fal.media/files/panda/nSbBaFAB_Hy7gcIyJkNpc_output.mp4" type="video/mp4">
+                        Your browser does not support the video tag.
+                        </video> -->
+                    </div>
+                    <div id="overlay-text-section" class="hidden">
+                        <!-- <div class="video-overlay">
+                            <img src="./logo/VISA-logo.png" alt="Left" class="overlay-img left-img"/>
+                            <div class="overlay-text">Unlock Your Adventure!</div>
+                            <img src="./logo/CIMB-logo.png" alt="Right" class="overlay-img right-img"/>
+                        </div> -->
+                    </div>
                 </div>
                 <div id="video-loading-section">
-                    <div class="loader-wrapper">
-                        <div class="loader"></div>
-                    </div>
-                    <div class="message">Loading Short Video... Please Wait!</div>
+                    <div class="message">Loading Short Video</div>
                 </div>
             </div>
         </div>
@@ -104,9 +185,11 @@
 
         const videoSection = document.getElementById('video-section');
         const videoLoadingSection = document.getElementById('video-loading-section');
+        const overlayTextSection = document.getElementById('overlay-text-section');
 
         const loaded = {
-            videos: false
+            videos: false,
+            titles: false
         };
 
         async function pollStatus() {
@@ -115,6 +198,7 @@
             const requests = [];
 
             if (!loaded.videos) requests.push(fetch('/api/videos'));
+            if (!loaded.titles) requests.push(fetch('/api/canva-titles'));
 
             const responses = await Promise.all(requests);
             const data = await Promise.all(responses.map(res => res.json()));
@@ -132,8 +216,26 @@
                         </video>
                     `;
                     videoSection.classList.remove('hidden');
+                    overlayTextSection.classList.remove('hidden');
                     videoLoadingSection.classList.add('hidden');
                     loaded.videos = true;
+                } else {
+                needsRetry = true;
+                }
+            }
+
+            if (!loaded.titles) {
+                const data2 = data[i++];
+                if (data2.length > 0) {
+                    const title = data2[0];
+                    overlayTextSection.innerHTML = `
+                        <div class="video-overlay">
+                            <img src="./logo/VISA-logo.png" alt="Left" class="overlay-img left-img"/>
+                            <div class="overlay-text">${title.template_1_text_1}!</div>
+                            <img src="./logo/CIMB-logo.png" alt="Right" class="overlay-img right-img"/>
+                        </div>
+                    `;
+                    loaded.titles = true;
                 } else {
                 needsRetry = true;
                 }
