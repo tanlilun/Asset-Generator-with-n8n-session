@@ -30,7 +30,8 @@
             border-radius: 8px;
             box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
             overflow: hidden;
-            min-width: 320px;
+            min-width: 400px;
+            width: auto;
             max-width: 400px;
             height: 720px;
             margin-bottom: 20px;
@@ -102,9 +103,12 @@
         }
         
         .s1-post-content {
-            padding: 0 12px 12px;
-            font-size: 15px;
+            padding: 8px 16px 0 16px;
+            font-size: 16px;
+            color: black;
             line-height: 1.4;
+            position: relative;
+            text-align: justify;
         }
         
         .s1-post-image {
@@ -500,6 +504,25 @@
         .post-action:hover {
         background-color: #b0b3b8;
         }
+
+        video {
+            width: 100%;
+            height: auto;
+            max-height: 36vh; /* limit height for 9:16 video */
+        }
+        @media (max-width: 400px) {
+            .s1-social-post {
+                background-color: #fff;
+                border-radius: 8px;
+                box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+                overflow: hidden;
+                min-width: 260px;
+                width: auto;
+                max-width: 400px;
+                height: 720px;
+                margin-bottom: 20px;
+            }
+        }
         
         /* Responsive Adjustments */
         @media (max-width: 900px) {
@@ -508,6 +531,8 @@
                 align-items: center;
             }
             .s1-social-post {
+                min-width: 320px;
+                width: auto;
                 max-width: 400px;
             }
         }
@@ -569,10 +594,10 @@
             </h3>
             <div class="s1-social-post">
                 <div class="fb-header">
-                    <img alt="Profile" class="fb-profile-img" height="40" src="https://ladiesstyleclothes.wordpress.com/wp-content/uploads/2015/12/cimb-logo.png" width="40"/>
+                    <img alt="Profile" class="fb-profile-img" height="40" src="./logo/UnionBank-logo.png" width="40"/>
                     <div class="fb-profile-details">
                         <div class="fb-profile-name">
-                            CIMB Malaysia
+                            UnionBank
                             <i class="fas fa-check-circle">
                             </i>
                         </div>
@@ -659,10 +684,10 @@
             </h3>
             <div class="s1-social-post">
                 <div class="post-header">
-                    <img alt="Profile" class="fb-profile-img" height="48" src="https://ladiesstyleclothes.wordpress.com/wp-content/uploads/2015/12/cimb-logo.png" width="48"/>
+                    <img alt="Profile" class="fb-profile-img" height="48" src="./logo/UnionBank-logo.png" width="48"/>
                     <div class="profile-info">
                     <span class="lin-profile-name">
-                    CIMB Malaysia
+                    UnionBank
                     </span>
                     <span class="profile-followers">
                     25,814 followers
@@ -762,10 +787,10 @@
             </h3>
             <div class="s1-social-post">
                 <div class="insta-header">
-                    <img alt="Profile" class="fb-profile-img" height="40" src="https://ladiesstyleclothes.wordpress.com/wp-content/uploads/2015/12/cimb-logo.png" width="40"/>
+                    <img alt="Profile" class="fb-profile-img" height="40" src="./logo/UnionBank-logo.png" width="40"/>
                     <div class="fb-profile-details">
                         <div class="fb-profile-name">
-                            CIMB Malaysia
+                            UnionBank
                             <i class="fas fa-check-circle">
                             </i>
                         </div>
@@ -776,7 +801,7 @@
                     </div>
                 </div>
 
-                <div id="ig-video-loading-section">
+                <div id="ig-video-loading-section" class="">
                     <div class="message">Loading Short Video<span></span></div>
                 </div>
                 <div id="ig-video-section" class="hidden">
@@ -799,7 +824,7 @@
                 </div>
                 <div id="ig-profile-name-section" class="insta-caption">
                     <span class="ig-profile-name">
-                        cimbmalaysia
+                        UnionBank
                     </span>
                 </div>
                 <div id="ig-caption-loading-section" class="">
@@ -881,7 +906,7 @@
                     `;
                     igCaptionSection.innerHTML = `
                         <span class="ig-profile-name">
-                            cimbmalaysia
+                            UnionBank
                         </span>
                         <span>
                             ${caption.instagram}
@@ -976,7 +1001,7 @@
                 if (data6.length > 0) {
                     const video = data6[0];
                     igVideoSection.innerHTML = `
-                        <video autoplay loop muted playsinline width="100%" height="100%">
+                        <video autoplay loop muted playsinline>
                         <source src="${video.video_url}" type="video/mp4">
                         Your browser does not support the video tag.
                         </video>

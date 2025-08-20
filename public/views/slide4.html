@@ -94,6 +94,7 @@
     .video-wrapper video {
         width: 100%;
         height: auto;
+        max-height: 80vh; /* limit height for 9:16 video */
         display: block;
     }
 
@@ -104,37 +105,46 @@
         right: 0;
         display: flex;
         justify-content: space-between;
-        align-items: flex-end;
+        align-items: center;
         padding: 0 20px;
-        pointer-events: none; /* Allows clicks to go through to the video */
+        pointer-events: none;
+        width: 100%;
+    }
+
+    .overlay-text-wrapper {
+        position: absolute;
+        left: 10%;
+        bottom: 25%;
+        width: 45%;
+        text-align: left;
+        pointer-events: none;
     }
 
     .overlay-text {
-        position: absolute;
-        bottom: 5%;
-        left: 50%;
-        transform: translateX(-50%);
         color: white;
-        padding: 0.3em 0.6em;
-        border-radius: 4px;
-        font-size: clamp(16px, 4vw, 36px);
+        font-size: clamp(16px, 4vw, 48px);
         font-weight: bold;
+        text-transform: uppercase;
         pointer-events: none;
-
         text-shadow: 
             -2px -2px 0 #000,  
             2px -2px 0 #000,
             -2px 2px 0 #000,
-            2px 2px 0 #000,
-            0 -2px 0 #000,
-            0 2px 0 #000,
-            -2px 0 0 #000,
-            2px 0 0 #000;
+            2px 2px 0 #000;
+    }
+
+    .overlay-logos {
+        position: absolute;
+        bottom: 10px;
+        right: 20px;
+        display: flex;
+        gap: 10px;
+        align-items: center;
+        pointer-events: none;
     }
 
     .overlay-img {
-        width: clamp(50px, 10vw, 100px);
-        height: auto;
+        height: clamp(16px, 4vw, 32px);
         object-fit: contain;
         pointer-events: none;
     }
@@ -162,20 +172,11 @@
             <div class="s4-section">
                 <div class="video-wrapper">
                     <div id="video-section" class="hidden">
-                        <!-- <video autoplay loop muted playsinline width="100%" height="100%">
-                        <source src="https://v3.fal.media/files/panda/nSbBaFAB_Hy7gcIyJkNpc_output.mp4" type="video/mp4">
-                        Your browser does not support the video tag.
-                        </video> -->
                     </div>
                     <div id="overlay-text-section" class="hidden">
-                        <!-- <div class="video-overlay">
-                            <img src="./logo/VISA-logo.png" alt="Left" class="overlay-img left-img"/>
-                            <div class="overlay-text">Unlock Your Adventure!</div>
-                            <img src="./logo/CIMB-logo.png" alt="Right" class="overlay-img right-img"/>
-                        </div> -->
                     </div>
                 </div>
-                <div id="video-loading-section">
+                <div id="video-loading-section" class="">
                     <div class="message">Loading Short Video</div>
                 </div>
             </div>
@@ -229,10 +230,12 @@
                 if (data2.length > 0) {
                     const title = data2[0];
                     overlayTextSection.innerHTML = `
-                        <div class="video-overlay">
-                            <img src="./logo/VISA-logo.png" alt="Left" class="overlay-img left-img"/>
+                        <div class="overlay-text-wrapper">
                             <div class="overlay-text">${title.template_1_text_1}!</div>
-                            <img src="./logo/CIMB-logo.png" alt="Right" class="overlay-img right-img"/>
+                        </div>
+                        <div class="overlay-logos">
+                            <img src="./logo/VISA-logo.png" alt="Visa" class="overlay-img" />
+                            <img src="./logo/UnionBank-logo.png" alt="UnionBank" class="overlay-img" />
                         </div>
                     `;
                     loaded.titles = true;
