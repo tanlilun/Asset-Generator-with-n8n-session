@@ -1,343 +1,574 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Manual Full Page Carousel</title>
-  <style>
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Content Carousel</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-    html, body {
-      height: auto;
-      overflow-x: hidden;
-    }
+        body {
+            font-family: 'Arial', sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: #F2F2F2;
+        }
 
-    .carousel {
-      position: relative;
-      overflow: hidden;
-      width: 100%;
-      height: 100vh;
-    }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
 
-    .slides {
-      display: flex;
-      width: 100%;
-      height: 100%;
-      transition: transform 0.6s ease-in-out;
-    }
+        /* Navigation Styles */
+        nav {
+            background-color: #2c3e50;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
 
-    .slide {
-      flex: 1 0 100%;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center; /* center by default */
-      height: 100vh;
-      position: relative;
-      background-size: cover;
-      background-position: center;
-      padding: 40px 20px; /* consistent spacing */
-      box-sizing: border-box;
-    }
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 0;
+        }
 
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #ecf0f1;
+            text-decoration: none;
+        }
 
-    .slide1 { background-color: #F2F2F2; }
-    .slide2 { background-color: #F2F2F2; }
-    .slide3 { background-color: #F2F2F2; }
-    .slide4 { background-color: #F2F2F2; }
+        .nav-menu {
+            display: flex;
+            list-style: none;
+        }
 
-    .slide2 {
-      align-items: flex-start;
-      justify-content: center;
-      overflow-y: auto; /* Enables scrolling */
-      height: 100vh;
-      padding: 20px 0px; /* Optional: adds space around content */
-    }
-    
-    .slide-content {
-      background-color: rgba(255,255,255,0.9);
-      padding: 40px 60px;
-      border-radius: 16px;
-      text-align: center;
-      cursor: pointer;
-      transition: transform 0.2s ease;
-      text-decoration: none;
-      color: #111;
-    }
+        .nav-item {
+            margin: 0 1rem;
+        }
 
-    .slide-content:hover {
-      transform: scale(1.05);
-    }
+        .nav-link {
+            color: #ecf0f1;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s ease;
+            padding: 0.5rem 0;
+            position: relative;
+        }
 
-    .slide-content h2 {
-      font-size: 2.5rem;
-      margin-bottom: 10px;
-    }
+        .nav-link:hover {
+            color: #3498db;
+        }
 
-    .slide-content p {
-      font-size: 1.1rem;
-      color: #333;
-    }
+        .nav-link.active {
+            color: #3498db;
+        }
 
-    .nav-arrow {
-      position: fixed; /* <-- changed from absolute */
-      top: 50%;
-      transform: translateY(-50%);
-      background-color: rgba(0, 0, 0, 0.5);
-      border: none;
-      color: white;
-      font-size: 2rem;
-      padding: 0.5rem 1rem;
-      cursor: pointer;
-      z-index: 1000; /* make sure it sits above all content */
-    }
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background-color: #3498db;
+            transition: width 0.3s ease;
+        }
 
-    .nav-arrow:hover {
-      background-color: rgba(0,0,0,0.8);
-    }
+        .nav-link:hover::after,
+        .nav-link.active::after {
+            width: 100%;
+        }
 
-    .prev { left: 10px; }
-    .next { right: 10px; }
+        .hamburger {
+            display: none;
+            cursor: pointer;
+            background: none;
+            border: none;
+            color: #ecf0f1;
+            font-size: 1.5rem;
+        }
 
-    .indicators {
-      position: absolute;
-      bottom: 20px;
-      width: 100%;
-      display: flex;
-      justify-content: center;
-      gap: 10px;
-    }
+        /* Carousel Styles */
+        .carousel-container {
+            margin-top: 1rem;
+            position: relative;
+            overflow: hidden;
+            border-radius: 8px;
+            /* box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1); */
+        }
 
-    .indicator {
-      width: 12px;
-      height: 12px;
-      background-color: rgba(255, 255, 255, 0.6);
-      border-radius: 50%;
-      cursor: pointer;
-    }
+        .carousel {
+            display: flex;
+            transition: transform 0.5s ease-in-out;
+            height: auto;
+        }
 
-    .indicator.active {
-      background-color: white;
-    }
+        .carousel-item {
+            min-width: 100%;
+            height: calc(100vh - 70px - 1rem);
+            position: relative;
+            background-color: #F2F2F2;
+            display: flex;
+            flex-direction: column;
+        }
 
-    @media (max-width: 768px) {
-      .slide-content {
-        padding: 30px 20px;
-      }
+        /* Content styling for each page */
+        .content-container {
+            height: 100%;
+            overflow-y: auto;
+            padding: 1rem;
+            border-radius: 8px;
+            background-color: #F2F2F2;
+            /* box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); */
+        }
 
-      .slide-content h2 {
-        font-size: 1.8rem;
-      }
+        .posts-content h2,
+        .newsletter-content h2,
+        .assets-content h2,
+        .video-content h2 {
+            color: #2c3e50;
+            margin-bottom: 1rem;
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 0.5rem;
+        }
 
-      .slide-content p {
-        font-size: 1rem;
-      }
+        /* Posts Content */
+        .posts-list {
+            list-style: none;
+        }
 
-      .nav-arrow {
-        font-size: 1.5rem;
-      }
-    }
+        .post-item {
+            margin-bottom: 1.5rem;
+            padding: 1rem;
+            border-left: 4px solid #3498db;
+            background-color: #f8f9fa;
+        }
 
-    @media (max-width: 1280px) {
-      html, body {
-        height: auto;
-        overflow-x: hidden;
-        overflow-y: auto;
-      }
+        .post-title {
+            font-size: 1.3rem;
+            color: #2980b9;
+            margin-bottom: 0.5rem;
+        }
 
-      .slide {
-        justify-content: flex-start;
-        height: auto;
-        min-height: 100vh;
-      }
+        .post-date {
+            font-size: 0.9rem;
+            color: #7f8c8d;
+            margin-bottom: 0.5rem;
+        }
 
-      .carousel {
-        height: auto;
-      }
+        /* Newsletter Content */
+        .newsletter-form {
+            max-width: 600px;
+            margin: 0 auto;
+        }
 
-      .slides {
-        height: auto;
-      }
-    }
+        .form-group {
+            margin-bottom: 1rem;
+        }
 
-  </style>
+        .form-label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 1rem;
+        }
+
+        .form-textarea {
+            resize: vertical;
+            min-height: 150px;
+        }
+
+        .submit-btn {
+            background-color: #3498db;
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: background-color 0.3s;
+        }
+
+        .submit-btn:hover {
+            background-color: #2980b9;
+        }
+
+        /* Assets Content */
+        .assets-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 1rem;
+        }
+
+        .asset-item {
+            border: 1px solid #F2F2F2;
+            border-radius: 8px;
+            overflow: hidden;
+            transition: transform 0.3s;
+        }
+
+        .asset-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .asset-image {
+            width: 100%;
+            height: 150px;
+            object-fit: cover;
+        }
+
+        .asset-info {
+            padding: 0.75rem;
+        }
+
+        .asset-title {
+            font-weight: 500;
+            margin-bottom: 0.25rem;
+        }
+
+        .asset-type {
+            font-size: 0.8rem;
+            color: #7f8c8d;
+        }
+
+        /* Video Content */
+        .video-container {
+            position: relative;
+            width: 100%;
+            height: 0;
+            padding-bottom: 56.25%; /* 16:9 aspect ratio */
+            margin: 1rem 0;
+        }
+
+        .video-iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: none;
+            border-radius: 8px;
+        }
+
+        .video-description {
+            margin: 1rem 0;
+            line-height: 1.8;
+        }
+
+        /* Carousel Controls */
+        .carousel-controls {
+            position: absolute;
+            top: 50%;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            transform: translateY(-50%);
+            z-index: 10;
+        }
+
+        .carousel-btn {
+            background-color: rgba(0, 0, 0, 0.5);
+            color: white;
+            border: none;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: top;
+            justify-content: center;
+            font-size: 2rem;
+            transition: background-color 0.3s ease;
+        }
+
+        .carousel-btn:hover {
+            background-color: rgba(0, 0, 0, 0.8);
+        }
+
+        /* Carousel Indicators */
+        .carousel-indicators {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 10px;
+            z-index: 10;
+        }
+
+        .indicator {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background-color: rgba(255, 255, 255, 0.5);
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .indicator.active {
+            background-color: white;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .nav-menu {
+                position: fixed;
+                left: -100%;
+                top: 70px;
+                flex-direction: column;
+                background-color: #2c3e50;
+                width: 100%;
+                text-align: center;
+                transition: 0.3s;
+                box-shadow: 0 10px 27px rgba(0, 0, 0, 0.05);
+                padding: 2rem 0;
+            }
+
+            .nav-menu.active {
+                left: 0;
+            }
+
+            .hamburger {
+                display: block;
+            }
+
+            .content-container {
+                padding: 0.5rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .nav-item {
+                margin: 1.5rem 0;
+            }
+
+            .content-container {
+                padding: 0.25rem;
+            }
+        }
+    </style>
 </head>
 <body>
+    <!-- Navigation -->
+    <nav>
+        <div class="container nav-container">
+            <a href="#" class="logo">ContentHub</a>
+            <button class="hamburger" id="hamburger">☰</button>
+            <ul class="nav-menu" id="nav-menu">
+                <li class="nav-item">
+                    <a href="#" class="nav-link active" data-page="posts">Social Posts</a>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link" data-page="newsletter">E-Newsletter</a>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link" data-page="assets">Ad Banners</a>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link" data-page="video">Social Video</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
 
-<div class="carousel">
-  <div class="slides" id="slideContainer">
-    <div class="slide slide1" id="slide1"></div>
-    <div class="slide slide2" id="slide2"></div>
-    <div class="slide slide3" id="slide3"></div>
-    <div class="slide slide4" id="slide4"></div>
-  </div>
+    <!-- Carousel -->
+    <div class="container">
+        <div class="carousel-container">
+            <div class="carousel" id="carousel">
+                <!-- Posts Page -->
+                <div class="carousel-item">
+                    <div id="slide1" class="content-container posts-content">
+                        
+                    </div>
+                </div>
 
-  <button class="nav-arrow prev" onclick="prevSlide()">&#10094;</button>
-  <button class="nav-arrow next" onclick="nextSlide()">&#10095;</button>
+                <!-- Newsletter Page -->
+                <div class="carousel-item">
+                    <div id="slide2" class="content-container newsletter-content">
 
-  <div class="indicators" id="indicators">
-    <div class="indicator active" onclick="goToSlide(0)"></div>
-    <div class="indicator" onclick="goToSlide(1)"></div>
-    <div class="indicator" onclick="goToSlide(2)"></div>
-    <div class="indicator" onclick="goToSlide(3)"></div>
-  </div>
-</div>
+                    </div>
+                </div>
 
-<script>
-  let currentSlide = 0;
-  const slides = document.getElementById('slideContainer');
-  const indicators = document.querySelectorAll('.indicator');
-  const slideFiles = ['slide1.html', 'slide2.html', 'slide3.html', 'slide4.html'];
+                <!-- Template Assets Page -->
+                <div class="carousel-item">
+                    <div id="slide3" class="content-container assets-content">
+                        
+                    </div>
+                </div>
 
-  function updateSlidePosition() {
-    slides.style.transform = `translateX(-${currentSlide * 100}%)`;
-    indicators.forEach((dot, index) => {
-      dot.classList.toggle('active', index === currentSlide);
-    });
-  }
+                <!-- Video Page -->
+                <div class="carousel-item">
+                    <div id="slide4" class="content-container video-content">
+                        
+                    </div>
+                </div>
+            </div>
 
-  function goToSlide(index) {
-    // Call cleanup if defined
-    if (typeof window.cleanupSlide === 'function') {
-      window.cleanupSlide();
-      delete window.cleanupSlide; // Optional: remove the reference
-    }
+            <!-- Carousel Controls -->
+            <div class="carousel-controls">
+                <button class="carousel-btn" id="prevBtn">‹</button>
+                <button class="carousel-btn" id="nextBtn">›</button>
+            </div>
 
-    currentSlide = index;
-    const container = document.getElementById(`slide${index + 1}`);
-    const file = slideFiles[index];
+            <!-- Carousel Indicators -->
+            <div class="carousel-indicators" id="indicators">
+                <div class="indicator active"></div>
+                <div class="indicator"></div>
+                <div class="indicator"></div>
+                <div class="indicator"></div>
+            </div>
+        </div>
+    </div>
 
-    fetch(file)
-      .then(res => res.text())
-      .then(html => {
-        const tempDiv = document.createElement('div');
-        tempDiv.innerHTML = html;
+    <script>
+        // DOM Elements
+        const carousel = document.getElementById('carousel');
+        const indicators = document.querySelectorAll('.indicator');
+        const prevBtn = document.getElementById('prevBtn');
+        const nextBtn = document.getElementById('nextBtn');
+        const navLinks = document.querySelectorAll('.nav-link');
+        const hamburger = document.getElementById('hamburger');
+        const navMenu = document.getElementById('nav-menu');
 
-        const scripts = tempDiv.querySelectorAll('script');
-        scripts.forEach(script => script.remove());
+        const slideFiles = ['slide1.html', 'slide2.html', 'slide3.html', 'slide4.html'];
 
-        container.innerHTML = tempDiv.innerHTML;
+        // State
+        let currentSlide = 0;
+        const totalSlides = slideFiles.length;
 
-        scripts.forEach(oldScript => {
-          const newScript = document.createElement('script');
-          newScript.type = "module";
-          newScript.textContent = oldScript.textContent;
-          container.appendChild(newScript);
+        // Update carousel position and indicators
+        function updateCarousel() {
+            carousel.style.transform = `translateX(-${currentSlide * 100}%)`;
+            
+            // Update indicators
+            indicators.forEach((indicator, index) => {
+                indicator.classList.toggle('active', index === currentSlide);
+            });
+            
+            // Update active nav link
+            navLinks.forEach((link, index) => {
+                link.classList.toggle('active', index === currentSlide);
+            });
+
+            console.log(`Navigated to slide ${currentSlide + 1}`);
+
+            goToSlide1(currentSlide);
+        }
+
+        function goToSlide1(index) {
+          // Call cleanup if defined
+          if (typeof window.cleanupSlide === 'function') {
+            window.cleanupSlide();
+            delete window.cleanupSlide; // Optional: remove the reference
+          }
+
+          currentSlide = index;
+          const container = document.getElementById(`slide${index + 1}`);
+          const file = slideFiles[index];
+
+          fetch(file)
+            .then(res => res.text())
+            .then(html => {
+              const tempDiv = document.createElement('div');
+              tempDiv.innerHTML = html;
+
+              const scripts = tempDiv.querySelectorAll('script');
+              scripts.forEach(script => script.remove());
+
+              container.innerHTML = tempDiv.innerHTML;
+
+              scripts.forEach(oldScript => {
+                const newScript = document.createElement('script');
+                newScript.type = "module";
+                newScript.textContent = oldScript.textContent;
+                container.appendChild(newScript);
+              });
+
+              // updateCarousel();
+            })
+            .catch(err => {
+              console.error(`Failed to load ${file}:`, err);
+              container.innerHTML = '<p style="color:white; text-align:center;">Failed to load content.</p>';
+              // updateCarousel();
+            });
+        }
+
+        // Go to specific slide
+        function goToSlide(index) {
+            if (index >= 0 && index < totalSlides) {
+                currentSlide = index;
+                updateCarousel();
+            }
+        }
+
+        // Next slide
+        function nextSlide() {
+            currentSlide = (currentSlide + 1) % totalSlides;
+            updateCarousel();
+        }
+
+        // Previous slide
+        function prevSlide() {
+            currentSlide = (currentSlide - 1 + totalSlides) % totalSlides;
+            updateCarousel();
+        }
+
+        // Event Listeners
+        nextBtn.addEventListener('click', nextSlide);
+        prevBtn.addEventListener('click', prevSlide);
+
+        // Navigation link click
+        navLinks.forEach((link, index) => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                goToSlide(index);
+            });
         });
 
-        updateSlidePosition();
+        // Indicator click
+        indicators.forEach((indicator, index) => {
+            indicator.addEventListener('click', () => {
+                goToSlide(index);
+            });
+        });
 
-        // 👇 Add this after DOM is updated
-        setTimeout(() => {
-          adjustCarouselHeight();
-        }, 50); // small delay to ensure DOM updates
-      })
-      .catch(err => {
-        console.error(`Failed to load ${file}:`, err);
-        container.innerHTML = '<p style="color:white; text-align:center;">Failed to load content.</p>';
-        updateSlidePosition();
-        setTimeout(() => {
-          adjustCarouselHeight();
-        }, 50);
-      });
-  }
+        // Mobile menu toggle
+        hamburger.addEventListener('click', () => {
+            navMenu.classList.toggle('active');
+        });
 
-  function adjustCarouselHeight() {
-    const activeSlide = document.getElementById(`slide${currentSlide + 1}`);
-    if (!activeSlide) return;
+        // Close mobile menu when clicking a link
+        navLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                navMenu.classList.remove('active');
+            });
+        });
 
-    const slideHeight = activeSlide.scrollHeight;
+        // Initialize the carousel
+        updateCarousel();
 
-    // Set height of carousel and slides container
-    const carousel = document.querySelector('.carousel');
-    const slidesContainer = document.querySelector('.slides');
-
-    carousel.style.height = `${slideHeight}px`;
-    slidesContainer.style.height = `${slideHeight}px`;
-  }
-
-  function nextSlide() {
-    currentSlide = (currentSlide + 1) % 4;
-    goToSlide(currentSlide);
-  }
-
-  function prevSlide() {
-    currentSlide = (currentSlide - 1 + 4) % 4;
-    goToSlide(currentSlide);
-  }
-
-  // Load first slide on page load
-  window.addEventListener('DOMContentLoaded', () => {
-    goToSlide(0);
-  });
-
-  // Your original async version
-  async function clearData() {
-    try {
-      const endpoints = [
-        '/api/captions',
-        '/api/images',
-        // '/api/preview-fb',
-        // '/api/preview-ig',
-        // '/api/preview-linkedIn',
-        '/api/email-items',
-        '/api/canva-titles',
-        '/api/videos',
-        '/api/leader-board-1',
-        '/api/leader-board-2',
-        '/api/leader-board-3',
-        '/api/bill-board-1',
-        '/api/bill-board-2',
-        '/api/bill-board-3',
-        '/api/half-page-1',
-        '/api/half-page-2',
-        '/api/half-page-3',
-      ];
-
-      const deletePromises = endpoints.map(url =>
-        fetch(url, { method: 'DELETE' })
-          .then(res => {
-            if (!res.ok) console.error(`Failed: ${url}`);
-          })
-          .catch(err => console.error(`Error with ${url}`, err))
-      );
-
-      await Promise.allSettled(deletePromises);
-      window.location.href = '/views/start.html';
-    } catch (error) {
-      console.error('Unexpected error:', error);
-    }
-  }
-
-  // Inactivity version
-  let inactivityTimer;
-  function resetInactivityTimer() {
-    clearTimeout(inactivityTimer);
-    inactivityTimer = setTimeout(() => {
-      console.log('User inactive. Clearing data...');
-      clearData();
-    }, 15 * 60 * 1000);
-  }
-
-  ['mousemove', 'keydown', 'scroll', 'touchstart'].forEach(event => {
-    document.addEventListener(event, resetInactivityTimer, true);
-  });
-
-  resetInactivityTimer();
-
-  // Unload version
-  function clearDataSync() {
-    const endpoints = [/* your list */];
-    endpoints.forEach(url => {
-      navigator.sendBeacon(url, '');
-    });
-  }
-
-  window.addEventListener('beforeunload', clearDataSync);
-</script>
+        // Handle window resize
+        window.addEventListener('resize', () => {
+            updateCarousel();
+        });
+    </script>
 </body>
 </html>
