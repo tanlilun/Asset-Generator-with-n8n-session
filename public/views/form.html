@@ -146,23 +146,22 @@
     <form id="demoForm" action="/submit" method="POST">
 
       <!-- Campaign Name -->
-      <label for="campaign_name">Campaign Name</label>
-      <input type="text" id="campaign_name" name="campaign_name" value="Millennial Miles" required>
+      <!-- <label for="campaign_name">Campaign Name</label>
+      <input type="text" id="campaign_name" name="campaign_name" value="Millennial Miles" required> -->
 
       <!-- Bank Product -->
-      <label>Bank Product</label>
+      <!-- <label>Bank Product</label>
       <div class="select-group single-select" id="bank_product_group">
         <button type="button" data-value="Credit Card">Credit Card</button>
         <button type="button" data-value="Financial Insurance">Financial Insurance</button>
         <button type="button" data-value="Personal Loan">Personal Loan</button>
         <button type="button" data-value="Savings Account">Savings Account</button>
       </div>
-      <input type="hidden" id="bank_product" name="bank_product">
+      <input type="hidden" id="bank_product" name="bank_product"> -->
 
       <!-- Target Audience -->
       <label>Target Audience</label>
       <div class="select-group single-select" id="target_audience_group">
-        <button type="button" data-value="Travel Enthusiasts">Travel Enthusiasts</button>
         <button type="button" data-value="Young Professionals (25-35 years old)">
           <span>Young Professionals</span><br>
           <span>(25-35 years old)</span>
@@ -171,6 +170,7 @@
           <span>Mid-Career Family Builders</span><br>
           <span>(30–45 years old)</span>
         </button>
+        <button type="button" data-value="Business Executive">Business Executive</button>
         <button type="button" data-value="Empty Nesters">Empty Nesters</button>
       </div>
       <input type="hidden" id="target_audience" name="target_audience">
@@ -178,7 +178,7 @@
       <!-- Theme -->
       <label>Theme</label>
       <div class="select-group single-select" id="theme_group">
-        <button type="button" data-value="Family">Family</button>
+        <button type="button" data-value="Wealthiness">Wealthiness</button>
         <button type="button" data-value="Travel Rewards">Travel Rewards</button>
         <button type="button" data-value="Dining Experience">Dining Experience</button>
         <button type="button" data-value="Retail & Entertainment">Retail & Entertainment</button>
@@ -186,16 +186,19 @@
       <input type="hidden" id="theme" name="theme">
 
       <!-- Channel (Multi-select) -->
-      <label>Channel</label>
+      <!-- <label>Channel</label>
       <div class="select-group multi-select" id="channel_group">
         <button type="button" data-value="FB">Facebook</button>
         <button type="button" data-value="IG">Instagram</button>
         <button type="button" data-value="Linkedin">LinkedIn</button>
         <button type="button" data-value="All">All</button>
       </div>
-      <input type="hidden" id="channel" name="channel">
+      <input type="hidden" id="channel" name="channel"> -->
 
       <!-- Hidden Fields -->
+      <input type="hidden" name="campaign_name" value="Millennial Miles">
+      <input type="hidden" name="bank_product" value="Credit Card">
+      <input type="hidden" name="channel" value="FB, IG, Linkedin">
       <input type="hidden" name="objective" value="Drive new applications; awareness, engagement, and sales">
       <input type="hidden" name="key_kpis" value="App volume, activation rate, revenue growth">
 
