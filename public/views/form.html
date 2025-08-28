@@ -207,6 +207,13 @@
   </div>
 
   <script>
+    // Generate or retrieve existing sessionId
+    let sessionId = sessionStorage.getItem('sessionId');
+    if (!sessionId) {
+      sessionId = crypto.randomUUID(); // Use UUID if supported
+      sessionStorage.setItem('sessionId', sessionId);
+    }
+
     // Single select groups
     document.querySelectorAll('.single-select').forEach(group => {
       const hiddenInput = document.getElementById(group.id.replace('_group', ''));
@@ -252,6 +259,9 @@
       const formData = new FormData(form);
       const payload = Object.fromEntries(formData.entries());
 
+      // Attach sessionId
+      payload.sessionId = sessionId;
+
       const response = await fetch('/submit', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -266,6 +276,8 @@
         alert('Something went wrong.');
       }
     });
+
+    console.log('Session ID:', sessionId);
   </script>
 </body>
 </html>

@@ -880,146 +880,157 @@
             // previewLinkedIn: false
         };
 
-        async function pollStatus() {
-            let needsRetry = false;
+        (async function (){
+            const sessionId = sessionStorage.getItem('sessionId');
 
-            const requests = [];
+            if (!sessionId) {
+                console.error('❌ sessionId not found in sessionStorage.');
+                // Optional: redirect or show error
+                // window.location.href = '/error.html';
+                return;
+            }
 
-            if (!loaded.captions) requests.push(fetch('/api/captions'));
-            // if (!loaded.previewFb) requests.push(fetch('/api/preview-fb'));
-            // if (!loaded.previewIg) requests.push(fetch('/api/preview-ig'));
-            // if (!loaded.previewLinkedIn) requests.push(fetch('/api/preview-linkedIn'));
-            if (!loaded.images) requests.push(fetch('/api/images'));
-            if (!loaded.videos) requests.push(fetch('/api/videos'));
-            
-            const responses = await Promise.all(requests);
-            const data = await Promise.all(responses.map(res => res.json()));
+            async function pollStatus() {
+                let needsRetry = false;
 
-            let i = 0;
+                const requests = [];
 
-            if (!loaded.captions) {
-                const data1 = data[i++];
-                if (data1.length > 0) {
-                    const caption = data1[0];
-                    fbCaptionSection.innerHTML = `
-                        <p>${caption.facebook}</p>
-                    `;
-                    igCaptionSection.innerHTML = `
-                        <span class="ig-profile-name">
-                            UnionBank
-                        </span>
-                        <span>
-                            ${caption.instagram}
-                        </span>
-                    `;
-                    linkedInCaptionSection.innerHTML = `
-                        <p>${caption.linkedin}</p>
-                    `;
-                    fbCaptionSection.classList.remove('hidden');
-                    igCaptionSection.classList.remove('hidden');
-                    linkedInCaptionSection.classList.remove('hidden');
-                    fbCaptionLoadingSection.classList.add('hidden');
-                    igCaptionLoadingSection.classList.add('hidden');
-                    linkedInCaptionLoadingSection.classList.add('hidden');
+                if (!loaded.captions) requests.push(fetch(`/api/captions?sessionId=${sessionId}`));
+                // if (!loaded.previewFb) requests.push(fetch('/api/preview-fb'));
+                // if (!loaded.previewIg) requests.push(fetch('/api/preview-ig'));
+                // if (!loaded.previewLinkedIn) requests.push(fetch('/api/preview-linkedIn'));
+                if (!loaded.images) requests.push(fetch(`/api/images?sessionId=${sessionId}`));
+                if (!loaded.videos) requests.push(fetch(`/api/videos?sessionId=${sessionId}`));
+                
+                const responses = await Promise.all(requests);
+                const data = await Promise.all(responses.map(res => res.json()));
 
-                    igDateSection.classList.remove('hidden');
-                    igProfileNameSection.classList.add('hidden');
+                let i = 0;
 
-                    loaded.captions = true;
-                } else {
-                needsRetry = true;
+                if (!loaded.captions) {
+                    const data1 = data[i++];
+                    if (data1.length > 0) {
+                        const caption = data1[0];
+                        fbCaptionSection.innerHTML = `
+                            <p>${caption.facebook}</p>
+                        `;
+                        igCaptionSection.innerHTML = `
+                            <span class="ig-profile-name">
+                                UnionBank
+                            </span>
+                            <span>
+                                ${caption.instagram}
+                            </span>
+                        `;
+                        linkedInCaptionSection.innerHTML = `
+                            <p>${caption.linkedin}</p>
+                        `;
+                        fbCaptionSection.classList.remove('hidden');
+                        igCaptionSection.classList.remove('hidden');
+                        linkedInCaptionSection.classList.remove('hidden');
+                        fbCaptionLoadingSection.classList.add('hidden');
+                        igCaptionLoadingSection.classList.add('hidden');
+                        linkedInCaptionLoadingSection.classList.add('hidden');
+
+                        igDateSection.classList.remove('hidden');
+                        igProfileNameSection.classList.add('hidden');
+
+                        loaded.captions = true;
+                    } else {
+                    needsRetry = true;
+                    }
+                }
+
+                // if (!loaded.previewFb) {
+                //     const data2 = data[i++];
+                //     if (data2.length > 0) {
+                //         const previewFb = data2[0];
+                //         fbPreviewSection.innerHTML = `
+                //             <a href="${previewFb.facebook_url}" target="_blank" class="s1-preview-button">Preview on Facebook</a>
+                //         `;
+                //         fbPreviewSection.classList.remove('hidden');
+                //         fbPreviewLoadingSection.classList.add('hidden');
+                //         loaded.previewFb = true;
+                //     } else {
+                //     needsRetry = true;
+                //     }
+                // }
+
+                // if (!loaded.previewIg) {
+                //     const data3 = data[i++];
+                //     if (data3.length > 0) {
+                //         const previewLink = data3[0];
+                //         igPreviewSection.innerHTML = `
+                //             <a href="${previewLink.instagram_url}" target="_blank" class="s1-preview-button">Preview on Instagram</a>
+                //         `;
+                //         igPreviewSection.classList.remove('hidden');
+                //         igPreviewLoadingSection.classList.add('hidden');
+                //         loaded.previewIg = true;
+                //     } else {
+                //     needsRetry = true;
+                //     }
+                // }
+
+                // if (!loaded.previewLinkedIn) {
+                //     const data4 = data[i++];
+                //     if (data4.length > 0) {
+                //         const previewLink = data4[0];
+                //         linkedInPreviewSection.innerHTML = `
+                //             <a href="${previewLink.linkedin_url}" target="_blank" class="s1-preview-button">Preview on LinkedIn</a>
+                //         `;
+                //         linkedInPreviewSection.classList.remove('hidden');
+                //         linkedInPreviewLoadingSection.classList.add('hidden');
+                //         loaded.previewLinkedIn = true;
+                //     } else {
+                //     needsRetry = true;
+                //     }
+                // }
+
+                if (!loaded.images) {
+                    const data5 = data[i++];
+                    if (data5.length > 0) {
+                        const image = data5[0];
+                        fbImageSection.innerHTML = `
+                            <img src="${image.image_url}" alt="Post image" class="s1-post-image">
+                        `;
+                        linkedInImageSection.innerHTML = `
+                            <img src="${image.image_url}" alt="Post image" class="s1-post-image">
+                        `;
+                        fbImageSection.classList.remove('hidden');
+                        linkedInImageSection.classList.remove('hidden');
+                        fbImageLoadingSection.classList.add('hidden');
+                        linkedInImageLoadingSection.classList.add('hidden');
+                        loaded.images = true;
+                    } else {
+                    needsRetry = true;
+                    }
+                }
+
+                if (!loaded.videos) {
+                    const data6 = data[i++];
+                    if (data6.length > 0) {
+                        const video = data6[0];
+                        igVideoSection.innerHTML = `
+                            <video autoplay loop muted playsinline width="100%" height="100%">
+                            <source src="${video.video_url}" type="video/mp4">
+                            Your browser does not support the video tag.
+                            </video>
+                        `;
+                        igVideoSection.classList.remove('hidden');
+                        igVideoLoadingSection.classList.add('hidden');
+                        loaded.videos = true;
+                    } else {
+                    needsRetry = true;
+                    }
+                }
+
+                if (needsRetry) {
+                    setTimeout(pollStatus, 2000);
                 }
             }
 
-            // if (!loaded.previewFb) {
-            //     const data2 = data[i++];
-            //     if (data2.length > 0) {
-            //         const previewFb = data2[0];
-            //         fbPreviewSection.innerHTML = `
-            //             <a href="${previewFb.facebook_url}" target="_blank" class="s1-preview-button">Preview on Facebook</a>
-            //         `;
-            //         fbPreviewSection.classList.remove('hidden');
-            //         fbPreviewLoadingSection.classList.add('hidden');
-            //         loaded.previewFb = true;
-            //     } else {
-            //     needsRetry = true;
-            //     }
-            // }
-
-            // if (!loaded.previewIg) {
-            //     const data3 = data[i++];
-            //     if (data3.length > 0) {
-            //         const previewLink = data3[0];
-            //         igPreviewSection.innerHTML = `
-            //             <a href="${previewLink.instagram_url}" target="_blank" class="s1-preview-button">Preview on Instagram</a>
-            //         `;
-            //         igPreviewSection.classList.remove('hidden');
-            //         igPreviewLoadingSection.classList.add('hidden');
-            //         loaded.previewIg = true;
-            //     } else {
-            //     needsRetry = true;
-            //     }
-            // }
-
-            // if (!loaded.previewLinkedIn) {
-            //     const data4 = data[i++];
-            //     if (data4.length > 0) {
-            //         const previewLink = data4[0];
-            //         linkedInPreviewSection.innerHTML = `
-            //             <a href="${previewLink.linkedin_url}" target="_blank" class="s1-preview-button">Preview on LinkedIn</a>
-            //         `;
-            //         linkedInPreviewSection.classList.remove('hidden');
-            //         linkedInPreviewLoadingSection.classList.add('hidden');
-            //         loaded.previewLinkedIn = true;
-            //     } else {
-            //     needsRetry = true;
-            //     }
-            // }
-
-            if (!loaded.images) {
-                const data5 = data[i++];
-                if (data5.length > 0) {
-                    const image = data5[0];
-                    fbImageSection.innerHTML = `
-                        <img src="${image.image_url}" alt="Post image" class="s1-post-image">
-                    `;
-                    linkedInImageSection.innerHTML = `
-                        <img src="${image.image_url}" alt="Post image" class="s1-post-image">
-                    `;
-                    fbImageSection.classList.remove('hidden');
-                    linkedInImageSection.classList.remove('hidden');
-                    fbImageLoadingSection.classList.add('hidden');
-                    linkedInImageLoadingSection.classList.add('hidden');
-                    loaded.images = true;
-                } else {
-                needsRetry = true;
-                }
-            }
-
-            if (!loaded.videos) {
-                const data6 = data[i++];
-                if (data6.length > 0) {
-                    const video = data6[0];
-                    igVideoSection.innerHTML = `
-                        <video autoplay loop muted playsinline width="100%" height="100%">
-                        <source src="${video.video_url}" type="video/mp4">
-                        Your browser does not support the video tag.
-                        </video>
-                    `;
-                    igVideoSection.classList.remove('hidden');
-                    igVideoLoadingSection.classList.add('hidden');
-                    loaded.videos = true;
-                } else {
-                needsRetry = true;
-                }
-            }
-
-            if (needsRetry) {
-                setTimeout(pollStatus, 2000);
-            }
-        }
-
-        pollStatus();
+            pollStatus();
+        })();
     </script>
 </body>
 </html>

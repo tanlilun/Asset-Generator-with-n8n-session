@@ -183,7 +183,6 @@
         </div>
     </div>
     <script type="module">
-
         const videoSection = document.getElementById('video-section');
         const videoLoadingSection = document.getElementById('video-loading-section');
         const overlayTextSection = document.getElementById('overlay-text-section');
@@ -193,64 +192,74 @@
             titles: false
         };
 
-        async function pollStatus() {
-            let needsRetry = false;
+        // Wrap logic in an IIFE (Immediately Invoked Function Expression)
+        (async function () {
+            const sessionId = sessionStorage.getItem('sessionId');
 
-            const requests = [];
+            if (!sessionId) {
+                console.error('❌ sessionId not found in sessionStorage.');
+                // Optional: redirect or show error
+                // window.location.href = '/error.html';
+                return;
+            }
 
-            if (!loaded.videos) requests.push(fetch('/api/videos'));
-            if (!loaded.titles) requests.push(fetch('/api/canva-titles'));
+            async function pollStatus() {
+                let needsRetry = false;
+                const requests = [];
 
-            const responses = await Promise.all(requests);
-            const data = await Promise.all(responses.map(res => res.json()));
+                if (!loaded.videos) requests.push(fetch(`/api/videos?sessionId=${sessionId}`));
+                if (!loaded.titles) requests.push(fetch(`/api/canva-titles?sessionId=${sessionId}`));
 
-            let i = 0;
+                const responses = await Promise.all(requests);
+                const data = await Promise.all(responses.map(res => res.json()));
 
-            if (!loaded.videos) {
-                const data1 = data[i++];
-                if (data1.length > 0) {
-                    const video = data1[0];
-                    videoSection.innerHTML = `
-                        <video autoplay loop muted playsinline width="100%" height="100%">
-                        <source src="${video.video_url}" type="video/mp4">
-                        Your browser does not support the video tag.
-                        </video>
-                    `;
-                    videoSection.classList.remove('hidden');
-                    overlayTextSection.classList.remove('hidden');
-                    videoLoadingSection.classList.add('hidden');
-                    loaded.videos = true;
-                } else {
-                needsRetry = true;
+                let i = 0;
+
+                if (!loaded.videos) {
+                    const data1 = data[i++];
+                    if (data1.length > 0) {
+                        const video = data1[0];
+                        videoSection.innerHTML = `
+                            <video autoplay loop muted playsinline width="100%" height="100%">
+                                <source src="${video.video_url}" type="video/mp4">
+                                Your browser does not support the video tag.
+                            </video>
+                        `;
+                        videoSection.classList.remove('hidden');
+                        overlayTextSection.classList.remove('hidden');
+                        videoLoadingSection.classList.add('hidden');
+                        loaded.videos = true;
+                    } else {
+                        needsRetry = true;
+                    }
+                }
+
+                if (!loaded.titles) {
+                    const data2 = data[i++];
+                    if (data2.length > 0) {
+                        const title = data2[0];
+                        overlayTextSection.innerHTML = `
+                            <div class="overlay-text-wrapper">
+                                <div class="overlay-text">${title.template_1_text_1}!</div>
+                            </div>
+                            <div class="overlay-logos">
+                                <img src="./logo/VISA-logo.png" alt="Visa" class="overlay-img" />
+                                <img src="./logo/UnionBank-logo.png" alt="UnionBank" class="overlay-img" />
+                            </div>
+                        `;
+                        loaded.titles = true;
+                    } else {
+                        needsRetry = true;
+                    }
+                }
+
+                if (needsRetry) {
+                    setTimeout(pollStatus, 2000);
                 }
             }
 
-            if (!loaded.titles) {
-                const data2 = data[i++];
-                if (data2.length > 0) {
-                    const title = data2[0];
-                    overlayTextSection.innerHTML = `
-                        <div class="overlay-text-wrapper">
-                            <div class="overlay-text">${title.template_1_text_1}!</div>
-                        </div>
-                        <div class="overlay-logos">
-                            <img src="./logo/VISA-logo.png" alt="Visa" class="overlay-img" />
-                            <img src="./logo/UnionBank-logo.png" alt="UnionBank" class="overlay-img" />
-                        </div>
-                    `;
-                    loaded.titles = true;
-                } else {
-                needsRetry = true;
-                }
-            }
-            
-            if (needsRetry) {
-                setTimeout(pollStatus, 2000);
-            }
-        }
-
-        pollStatus();
-
+            pollStatus();
+        })();
     </script>
 </body>
 </html>

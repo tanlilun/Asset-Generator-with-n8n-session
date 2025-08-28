@@ -367,157 +367,169 @@
       halfPage3: false
     };
 
-    async function pollStatus() {
-      let needsRetry = false;
+    (async function () {
+      const sessionId = sessionStorage.getItem('sessionId');
 
-      const requests = [];
+      if (!sessionId) {
+        console.error('❌ sessionId not found in sessionStorage.');
+        // Optional: redirect or show error
+        // window.location.href = '/error.html';
+        return;
+      }
 
-      if (!loaded.leaderBoard1) requests.push(fetch('/api/leader-board-1'));
-      if (!loaded.leaderBoard2) requests.push(fetch('/api/leader-board-2'));
-      if (!loaded.leaderBoard3) requests.push(fetch('/api/leader-board-3'));
-      if (!loaded.billBoard1) requests.push(fetch('/api/bill-board-1'));
-      if (!loaded.billBoard2) requests.push(fetch('/api/bill-board-2'));
-      if (!loaded.billBoard3) requests.push(fetch('/api/bill-board-3'));
-      if (!loaded.halfPage1) requests.push(fetch('/api/half-page-1'));
-      if (!loaded.halfPage2) requests.push(fetch('/api/half-page-2'));
-      if (!loaded.halfPage3) requests.push(fetch('/api/half-page-3'));
+      async function pollStatus() {
+        let needsRetry = false;
 
-      const responses = await Promise.all(requests);
-      const data = await Promise.all(responses.map(res => res.json()));
+        const requests = [];
 
-      let i = 0;
+        if (!loaded.leaderBoard1) requests.push(fetch(`/api/leader-board-1?sessionId=${sessionId}`));
+        if (!loaded.leaderBoard2) requests.push(fetch(`/api/leader-board-2?sessionId=${sessionId}`));
+        if (!loaded.leaderBoard3) requests.push(fetch(`/api/leader-board-3?sessionId=${sessionId}`));
+        if (!loaded.billBoard1) requests.push(fetch(`/api/bill-board-1?sessionId=${sessionId}`));
+        if (!loaded.billBoard2) requests.push(fetch(`/api/bill-board-2?sessionId=${sessionId}`));
+        if (!loaded.billBoard3) requests.push(fetch(`/api/bill-board-3?sessionId=${sessionId}`));
+        if (!loaded.halfPage1) requests.push(fetch(`/api/half-page-1?sessionId=${sessionId}`));
+        if (!loaded.halfPage2) requests.push(fetch(`/api/half-page-2?sessionId=${sessionId}`));
+        if (!loaded.halfPage3) requests.push(fetch(`/api/half-page-3?sessionId=${sessionId}`));
 
-      if (!loaded.leaderBoard1) {
-          const data1 = data[i++];
-          if (data1.length > 0) {
-              const leaderBoard1 = data1[0];
-              leaderBoard1Section.innerHTML = `
-                <img src="${leaderBoard1.leaderBoard_1}" alt="Leaderboard 728x90" width="728" height="90" />
-              `;
-              leaderBoard1Section.classList.remove('hidden');
-              leaderBoard1LoadingSection.classList.add('hidden');
-              loaded.leaderBoard1 = true;
+        const responses = await Promise.all(requests);
+        const data = await Promise.all(responses.map(res => res.json()));
+
+        let i = 0;
+
+        if (!loaded.leaderBoard1) {
+            const data1 = data[i++];
+            if (data1.length > 0) {
+                const leaderBoard1 = data1[0];
+                leaderBoard1Section.innerHTML = `
+                  <img src="${leaderBoard1.leaderBoard_1}" alt="Leaderboard 728x90" width="728" height="90" />
+                `;
+                leaderBoard1Section.classList.remove('hidden');
+                leaderBoard1LoadingSection.classList.add('hidden');
+                loaded.leaderBoard1 = true;
+            } else {
+            needsRetry = true;
+            }
+        }
+        if (!loaded.leaderBoard2) {
+            const data2 = data[i++];
+            if (data2.length > 0) {
+                const leaderBoard2 = data2[0];
+                leaderBoard2Section.innerHTML = `
+                  <img src="${leaderBoard2.leaderBoard_2}" alt="Leaderboard 728x90" width="728" height="90" />
+                `;
+                leaderBoard2Section.classList.remove('hidden');
+                leaderBoard2LoadingSection.classList.add('hidden');
+                loaded.leaderBoard2 = true;
+            } else {
+            needsRetry = true;
+            }
+        }
+        if (!loaded.leaderBoard3) {
+          const data3 = data[i++];
+          if (data3.length > 0) {
+            const leaderBoard3 = data3[0];
+            leaderBoard3Section.innerHTML = `
+              <img src="${leaderBoard3.leaderBoard_3}" alt="Leaderboard 728x90" width="728" height="90" />
+            `;
+            leaderBoard3Section.classList.remove('hidden');
+            leaderBoard3LoadingSection.classList.add('hidden');
+            loaded.leaderBoard3 = true;
           } else {
           needsRetry = true;
           }
-      }
-      if (!loaded.leaderBoard2) {
-          const data2 = data[i++];
-          if (data2.length > 0) {
-              const leaderBoard2 = data2[0];
-              leaderBoard2Section.innerHTML = `
-                <img src="${leaderBoard2.leaderBoard_2}" alt="Leaderboard 728x90" width="728" height="90" />
-              `;
-              leaderBoard2Section.classList.remove('hidden');
-              leaderBoard2LoadingSection.classList.add('hidden');
-              loaded.leaderBoard2 = true;
+        }
+        if (!loaded.billBoard1) {
+          const data4 = data[i++];
+          if (data4.length > 0) {
+            const billBoard1 = data4[0];
+            billBoard1Section.innerHTML = `
+              <img src="${billBoard1.billBoard_1}" alt="Billboard 970x250" width="970" height="250" />
+            `;
+            billBoard1Section.classList.remove('hidden');
+            billBoard1LoadingSection.classList.add('hidden');
+            loaded.billBoard1 = true;
           } else {
           needsRetry = true;
           }
-      }
-      if (!loaded.leaderBoard3) {
-        const data3 = data[i++];
-        if (data3.length > 0) {
-          const leaderBoard3 = data3[0];
-          leaderBoard3Section.innerHTML = `
-            <img src="${leaderBoard3.leaderBoard_3}" alt="Leaderboard 728x90" width="728" height="90" />
-          `;
-          leaderBoard3Section.classList.remove('hidden');
-          leaderBoard3LoadingSection.classList.add('hidden');
-          loaded.leaderBoard3 = true;
-        } else {
-        needsRetry = true;
+        }
+        if (!loaded.billBoard2) {
+          const data5 = data[i++];
+          if (data5.length > 0) {
+            const billBoard2 = data5[0];
+            billBoard2Section.innerHTML = `
+              <img src="${billBoard2.billBoard_2}" alt="Billboard 970x250" width="970" height="250" />
+            `;
+            billBoard2Section.classList.remove('hidden');
+            billBoard2LoadingSection.classList.add('hidden');
+            loaded.billBoard2 = true;
+          } else {
+          needsRetry = true;
+          }
+        }
+        if (!loaded.billBoard3) {
+          const data6 = data[i++];
+          if (data6.length > 0) {
+            const billBoard3 = data6[0];
+            billBoard3Section.innerHTML = `
+              <img src="${billBoard3.billBoard_3}" alt="Billboard 970x250" width="970" height="250" />
+            `;
+            billBoard3Section.classList.remove('hidden');
+            billBoard3LoadingSection.classList.add('hidden');
+            loaded.billBoard3 = true;
+          } else {
+          needsRetry = true;
+          }
+        }
+        if (!loaded.halfPage1) {
+          const data7 = data[i++];
+          if (data7.length > 0) {
+            const halfPage1 = data7[0];
+            halfPage1Section.innerHTML = `
+              <img src="${halfPage1.halfPage_1}" alt="Half Page 300x600" width="300" height="600" />
+            `;
+            halfPage1Section.classList.remove('hidden');
+            halfPage1LoadingSection.classList.add('hidden');
+            loaded.halfPage1 = true;
+          } else {
+          needsRetry = true;
+          }
+        }
+        if (!loaded.halfPage2) {
+          const data8 = data[i++];
+          if (data8.length > 0) {
+            const halfPage2 = data8[0];
+            halfPage2Section.innerHTML = `
+              <img src="${halfPage2.halfPage_2}" alt="Half Page 300x600" width="300" height="600" />
+            `;
+            halfPage2Section.classList.remove('hidden');
+            halfPage2LoadingSection.classList.add('hidden');
+            loaded.halfPage2 = true;
+          } else {
+          needsRetry = true;
+          }
+        }
+        if (!loaded.halfPage3) {
+          const data9 = data[i++];
+          if (data9.length > 0) {
+            const halfPage3 = data9[0];
+            halfPage3Section.innerHTML = `
+              <img src="${halfPage3.halfPage_3}" alt="Half Page 300x600" width="300" height="600" />
+            `;
+            halfPage3Section.classList.remove('hidden');
+            halfPage3LoadingSection.classList.add('hidden');
+            loaded.halfPage3 = true;
+          } else {
+          needsRetry = true;
+          }
+        }
+        if (needsRetry) {
+          setTimeout(pollStatus, 2000);
         }
       }
-      if (!loaded.billBoard1) {
-        const data4 = data[i++];
-        if (data4.length > 0) {
-          const billBoard1 = data4[0];
-          billBoard1Section.innerHTML = `
-            <img src="${billBoard1.billBoard_1}" alt="Billboard 970x250" width="970" height="250" />
-          `;
-          billBoard1Section.classList.remove('hidden');
-          billBoard1LoadingSection.classList.add('hidden');
-          loaded.billBoard1 = true;
-        } else {
-        needsRetry = true;
-        }
-      }
-      if (!loaded.billBoard2) {
-        const data5 = data[i++];
-        if (data5.length > 0) {
-          const billBoard2 = data5[0];
-          billBoard2Section.innerHTML = `
-            <img src="${billBoard2.billBoard_2}" alt="Billboard 970x250" width="970" height="250" />
-          `;
-          billBoard2Section.classList.remove('hidden');
-          billBoard2LoadingSection.classList.add('hidden');
-          loaded.billBoard2 = true;
-        } else {
-        needsRetry = true;
-        }
-      }
-      if (!loaded.billBoard3) {
-        const data6 = data[i++];
-        if (data6.length > 0) {
-          const billBoard3 = data6[0];
-          billBoard3Section.innerHTML = `
-            <img src="${billBoard3.billBoard_3}" alt="Billboard 970x250" width="970" height="250" />
-          `;
-          billBoard3Section.classList.remove('hidden');
-          billBoard3LoadingSection.classList.add('hidden');
-          loaded.billBoard3 = true;
-        } else {
-        needsRetry = true;
-        }
-      }
-      if (!loaded.halfPage1) {
-        const data7 = data[i++];
-        if (data7.length > 0) {
-          const halfPage1 = data7[0];
-          halfPage1Section.innerHTML = `
-            <img src="${halfPage1.halfPage_1}" alt="Half Page 300x600" width="300" height="600" />
-          `;
-          halfPage1Section.classList.remove('hidden');
-          halfPage1LoadingSection.classList.add('hidden');
-          loaded.halfPage1 = true;
-        } else {
-        needsRetry = true;
-        }
-      }
-      if (!loaded.halfPage2) {
-        const data8 = data[i++];
-        if (data8.length > 0) {
-          const halfPage2 = data8[0];
-          halfPage2Section.innerHTML = `
-            <img src="${halfPage2.halfPage_2}" alt="Half Page 300x600" width="300" height="600" />
-          `;
-          halfPage2Section.classList.remove('hidden');
-          halfPage2LoadingSection.classList.add('hidden');
-          loaded.halfPage2 = true;
-        } else {
-        needsRetry = true;
-        }
-      }
-      if (!loaded.halfPage3) {
-        const data9 = data[i++];
-        if (data9.length > 0) {
-          const halfPage3 = data9[0];
-          halfPage3Section.innerHTML = `
-            <img src="${halfPage3.halfPage_3}" alt="Half Page 300x600" width="300" height="600" />
-          `;
-          halfPage3Section.classList.remove('hidden');
-          halfPage3LoadingSection.classList.add('hidden');
-          loaded.halfPage3 = true;
-        } else {
-        needsRetry = true;
-        }
-      }
-      if (needsRetry) {
-        setTimeout(pollStatus, 2000);
-      }
-    }
-  pollStatus();
+    pollStatus();
+      
+    })
 
 </script>
 </body>

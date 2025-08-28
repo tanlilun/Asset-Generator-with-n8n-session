@@ -273,132 +273,143 @@ a, a:hover {
 		images: false
 	};
 
-	async function pollStatus() {
-		let needsRetry = false;
+	(async function () {
+		const sessionId = sessionStorage.getItem('sessionId');
 
-		const requests = [];
+		if (!sessionId) {
+			console.error('❌ sessionId not found in sessionStorage.');
+			// Optional: redirect or show error
+			// window.location.href = '/error.html';
+			return;
+		}
 
-		if (!loaded.emailItems) requests.push(fetch('/api/email-items'));
-		if (!loaded.images) requests.push(fetch('/api/images'));
-		
-		const responses = await Promise.all(requests);
-		const data = await Promise.all(responses.map(res => res.json()));
+		async function pollStatus() {
+			let needsRetry = false;
 
-		let i = 0;
+			const requests = [];
 
-		if (!loaded.emailItems) {
-			const data1 = data[i++];
-			if (data1.length > 0) {
-				const emailItem = data1[0];
-				subjectSection.innerHTML = `
-					<td align="center" valign="top" style="border-collapse: collapse; border-spacing: 0; margin: 0; padding: 0; padding-left: 6.25%; padding-right: 6.25%; width: 87.5%; font-size: 24px; font-weight: bold; line-height: 130%;
-						padding-top: 25px;
-						color: #000000;
-						font-family: sans-serif;" class="header">
-							${emailItem.subject}
-					</td>
-				`;
-				headlineSection.innerHTML = `
-					<td align="center" valign="top" style="border-collapse: collapse; border-spacing: 0; margin: 0; padding: 0; padding-bottom: 3px; padding-left: 6.25%; padding-right: 6.25%; width: 87.5%; font-size: 18px; font-weight: 300; line-height: 150%;
-						padding-top: 5px;
-						color: #000000;
-						font-family: sans-serif;" class="subheader">
-							${emailItem.headline}
-					</td>
-				`;
-				captionSection.innerHTML = `
-					<td align="center" valign="top" style="border-collapse: collapse; border-spacing: 0; margin: 0; padding: 0; padding-left: 6.25%; padding-right: 6.25%; width: 87.5%; font-size: 17px; font-weight: 400; line-height: 160%;
-						padding-top: 25px; 
-						color: #000000;
-						font-family: sans-serif;" class="paragraph">
-							${emailItem.caption}
-					</td>
-				`;
-				ctaSection.innerHTML = `
-					<td align="center" valign="top" style="border-collapse: collapse; border-spacing: 0; margin: 0; padding: 0; padding-left: 6.25%; padding-right: 6.25%; width: 87.5%;
-						padding-top: 25px;
-						padding-bottom: 5px;" class="button">
-						<a href="https://www.yourbank.com/apply" target="_blank" style="text-decoration: none;">
-							<table border="0" cellpadding="0" cellspacing="0" align="center" style="max-width: 240px; min-width: 120px; border-collapse: collapse; border-spacing: 0; padding: 0;">
-								<tr>
-									<td align="center" valign="middle" style="padding: 12px 24px; margin: 0; text-decoration: none; border-collapse: collapse; border-spacing: 0; border-radius: 4px; -webkit-border-radius: 4px; -moz-border-radius: 4px; -khtml-border-radius: 4px;" bgcolor="#E9703E">
-										<a target="_blank" style="text-decoration: none; color: #FFFFFF; font-family: sans-serif; font-size: 17px; font-weight: 400; line-height: 120%;" href="https://www.yourbank.com/apply">
-											${emailItem.cta}
-										</a>
-									</td>
-								</tr>
-							</table>
-						</a>
-					</td>
-				`;
-				point1Section.innerHTML = `
-					<td align="left" valign="top" colspan="2" style="font-size: 17px; font-weight: 400; line-height: 160%; border-collapse: collapse; border-spacing: 0; margin: 0; padding: 0;
-						padding-top: 30px;
-						color: #000000;
-						font-family: sans-serif;" class="paragraph">
-						<b style="color: #333333;">${emailItem.point1}</b>
-						<br/>
-						${emailItem.description1}
-					</td>
-				`;
-				point2Section.innerHTML = `
-					<td align="left" valign="top" colspan="2" style="font-size: 17px; font-weight: 400; line-height: 160%; border-collapse: collapse; border-spacing: 0; margin: 0; padding: 0;
-						padding-top: 30px;
-						color: #000000;
-						font-family: sans-serif;" class="paragraph">
-						<b style="color: #333333;">${emailItem.point2}</b>
-						<br/>
-						${emailItem.description2}
-					</td>
-				`;
-				subjectSection.classList.remove('hidden');
-				headlineSection.classList.remove('hidden');
-				point1Section.classList.remove('hidden');
-				point2Section.classList.remove('hidden');
-				captionSection.classList.remove('hidden');
-				ctaSection.classList.remove('hidden');
+			if (!loaded.emailItems) requests.push(fetch(`/api/email-items?sessionId=${sessionId}`));
+			if (!loaded.images) requests.push(fetch(`/api/images?sessionId=${sessionId}`));
 
-				subjectLoadingSection.classList.add('hidden');
-				headlineLoadingSection.classList.add('hidden');
-				point1LoadingSection.classList.add('hidden');
-				point2LoadingSection.classList.add('hidden');
-				captionLoadingSection.classList.add('hidden');
-				ctaLoadingSection.classList.add('hidden');
-				loaded.emailItems = true;
-			} else {
-			needsRetry = true;
+			const responses = await Promise.all(requests);
+			const data = await Promise.all(responses.map(res => res.json()));
+
+			let i = 0;
+
+			if (!loaded.emailItems) {
+				const data1 = data[i++];
+				if (data1.length > 0) {
+					const emailItem = data1[0];
+					subjectSection.innerHTML = `
+						<td align="center" valign="top" style="border-collapse: collapse; border-spacing: 0; margin: 0; padding: 0; padding-left: 6.25%; padding-right: 6.25%; width: 87.5%; font-size: 24px; font-weight: bold; line-height: 130%;
+							padding-top: 25px;
+							color: #000000;
+							font-family: sans-serif;" class="header">
+								${emailItem.subject}
+						</td>
+					`;
+					headlineSection.innerHTML = `
+						<td align="center" valign="top" style="border-collapse: collapse; border-spacing: 0; margin: 0; padding: 0; padding-bottom: 3px; padding-left: 6.25%; padding-right: 6.25%; width: 87.5%; font-size: 18px; font-weight: 300; line-height: 150%;
+							padding-top: 5px;
+							color: #000000;
+							font-family: sans-serif;" class="subheader">
+								${emailItem.headline}
+						</td>
+					`;
+					captionSection.innerHTML = `
+						<td align="center" valign="top" style="border-collapse: collapse; border-spacing: 0; margin: 0; padding: 0; padding-left: 6.25%; padding-right: 6.25%; width: 87.5%; font-size: 17px; font-weight: 400; line-height: 160%;
+							padding-top: 25px; 
+							color: #000000;
+							font-family: sans-serif;" class="paragraph">
+								${emailItem.caption}
+						</td>
+					`;
+					ctaSection.innerHTML = `
+						<td align="center" valign="top" style="border-collapse: collapse; border-spacing: 0; margin: 0; padding: 0; padding-left: 6.25%; padding-right: 6.25%; width: 87.5%;
+							padding-top: 25px;
+							padding-bottom: 5px;" class="button">
+							<a href="https://www.yourbank.com/apply" target="_blank" style="text-decoration: none;">
+								<table border="0" cellpadding="0" cellspacing="0" align="center" style="max-width: 240px; min-width: 120px; border-collapse: collapse; border-spacing: 0; padding: 0;">
+									<tr>
+										<td align="center" valign="middle" style="padding: 12px 24px; margin: 0; text-decoration: none; border-collapse: collapse; border-spacing: 0; border-radius: 4px; -webkit-border-radius: 4px; -moz-border-radius: 4px; -khtml-border-radius: 4px;" bgcolor="#E9703E">
+											<a target="_blank" style="text-decoration: none; color: #FFFFFF; font-family: sans-serif; font-size: 17px; font-weight: 400; line-height: 120%;" href="https://www.yourbank.com/apply">
+												${emailItem.cta}
+											</a>
+										</td>
+									</tr>
+								</table>
+							</a>
+						</td>
+					`;
+					point1Section.innerHTML = `
+						<td align="left" valign="top" colspan="2" style="font-size: 17px; font-weight: 400; line-height: 160%; border-collapse: collapse; border-spacing: 0; margin: 0; padding: 0;
+							padding-top: 30px;
+							color: #000000;
+							font-family: sans-serif;" class="paragraph">
+							<b style="color: #333333;">${emailItem.point1}</b>
+							<br/>
+							${emailItem.description1}
+						</td>
+					`;
+					point2Section.innerHTML = `
+						<td align="left" valign="top" colspan="2" style="font-size: 17px; font-weight: 400; line-height: 160%; border-collapse: collapse; border-spacing: 0; margin: 0; padding: 0;
+							padding-top: 30px;
+							color: #000000;
+							font-family: sans-serif;" class="paragraph">
+							<b style="color: #333333;">${emailItem.point2}</b>
+							<br/>
+							${emailItem.description2}
+						</td>
+					`;
+					subjectSection.classList.remove('hidden');
+					headlineSection.classList.remove('hidden');
+					point1Section.classList.remove('hidden');
+					point2Section.classList.remove('hidden');
+					captionSection.classList.remove('hidden');
+					ctaSection.classList.remove('hidden');
+
+					subjectLoadingSection.classList.add('hidden');
+					headlineLoadingSection.classList.add('hidden');
+					point1LoadingSection.classList.add('hidden');
+					point2LoadingSection.classList.add('hidden');
+					captionLoadingSection.classList.add('hidden');
+					ctaLoadingSection.classList.add('hidden');
+					loaded.emailItems = true;
+				} else {
+				needsRetry = true;
+				}
+			}
+
+			if (!loaded.images) {
+				const data2 = data[i++];
+				if (data2.length > 0) {
+					const image = data2[0];
+					imageSection.innerHTML = `
+						<td align="center" valign="top" style="border-collapse: collapse; border-spacing: 0; margin: 0; padding: 0;
+							padding-top: 20px;" class="hero"><img border="0" vspace="0" hspace="0"
+							src="${image.image_url}"
+							alt="Please enable images to view this content" title="Hero Image"
+							width="560" style="
+							width: 100%;
+							max-width: 560px;
+							color: #000000; font-size: 13px; margin: 0; padding: 0; outline: none; text-decoration: none; -ms-interpolation-mode: bicubic; border: none; display: block;"/>
+						</td>
+					`;
+					imageSection.classList.remove('hidden');
+					imageLoadingSection.classList.add('hidden');
+					loaded.images = true;
+				} else {
+				needsRetry = true;
+				}
+			}
+			
+			if (needsRetry) {
+				setTimeout(pollStatus, 2000);
 			}
 		}
 
-		if (!loaded.images) {
-			const data2 = data[i++];
-			if (data2.length > 0) {
-				const image = data2[0];
-				imageSection.innerHTML = `
-					<td align="center" valign="top" style="border-collapse: collapse; border-spacing: 0; margin: 0; padding: 0;
-						padding-top: 20px;" class="hero"><img border="0" vspace="0" hspace="0"
-						src="${image.image_url}"
-						alt="Please enable images to view this content" title="Hero Image"
-						width="560" style="
-						width: 100%;
-						max-width: 560px;
-						color: #000000; font-size: 13px; margin: 0; padding: 0; outline: none; text-decoration: none; -ms-interpolation-mode: bicubic; border: none; display: block;"/>
-					</td>
-				`;
-				imageSection.classList.remove('hidden');
-				imageLoadingSection.classList.add('hidden');
-				loaded.images = true;
-			} else {
-			needsRetry = true;
-			}
-		}
-		
-		if (needsRetry) {
-			setTimeout(pollStatus, 2000);
-		}
-	}
-
-	pollStatus();
+		pollStatus();
+	})();
 
 </script>
 
