@@ -38,8 +38,7 @@ app.post('/submit', async (req, res) => {
     const payload = req.body;
 
     // Send data to your n8n webhook (GET or POST depending on your flow)
-    // const webhookRes = await fetch(`${N8N_WEBHOOK_URL}/new-ui-1`, {
-    const webhookRes = await fetch(`${N8N_WEBHOOK_URL}/hellow`, {
+    const webhookRes = await fetch(`${N8N_WEBHOOK_URL}/new-ui-1`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(payload)
