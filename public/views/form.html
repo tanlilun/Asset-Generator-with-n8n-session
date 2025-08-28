@@ -212,6 +212,7 @@
     if (!sessionId) {
       sessionId = crypto.randomUUID(); // Use UUID if supported
       sessionStorage.setItem('sessionId', sessionId);
+      console.log('Double-check Session ID:', sessionId);
     }
 
     // Single select groups
