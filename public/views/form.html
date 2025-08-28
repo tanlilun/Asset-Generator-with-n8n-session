@@ -207,78 +207,80 @@
   </div>
 
   <script>
-    // Generate or retrieve existing sessionId
-    let sessionId = sessionStorage.getItem('sessionId');
-    if (!sessionId) {
-      sessionId = crypto.randomUUID(); // Use UUID if supported
-      sessionStorage.setItem('sessionId', sessionId);
-      console.log('Double-check Session ID:', sessionId);
-    }
+    window.addEventListener('DOMContentLoaded', () => {
+      // Generate or retrieve existing sessionId
+      let sessionId = sessionStorage.getItem('sessionId');
+      if (!sessionId) {
+        sessionId = crypto.randomUUID(); // Use UUID if supported
+        sessionStorage.setItem('sessionId', sessionId);
+        location.reload();
+      }
 
-    // Single select groups
-    document.querySelectorAll('.single-select').forEach(group => {
-      const hiddenInput = document.getElementById(group.id.replace('_group', ''));
-      group.querySelectorAll('button').forEach(btn => {
-        btn.addEventListener('click', () => {
-          group.querySelectorAll('button').forEach(b => b.classList.remove('selected'));
-          btn.classList.add('selected');
-          hiddenInput.value = btn.dataset.value;
+      // Single select groups
+      document.querySelectorAll('.single-select').forEach(group => {
+        const hiddenInput = document.getElementById(group.id.replace('_group', ''));
+        group.querySelectorAll('button').forEach(btn => {
+          btn.addEventListener('click', () => {
+            group.querySelectorAll('button').forEach(b => b.classList.remove('selected'));
+            btn.classList.add('selected');
+            hiddenInput.value = btn.dataset.value;
+          });
         });
       });
-    });
 
-    // Multi-select for channels
-    const channelButtons = document.querySelectorAll('#channel_group button');
-    const channelInput = document.getElementById('channel');
-    channelButtons.forEach(btn => {
-      btn.addEventListener('click', () => {
-        if (btn.dataset.value === 'All') {
-          const allSelected = [...channelButtons].slice(0, -1).every(b => b.classList.contains('selected'));
-          if (allSelected) {
-            channelButtons.forEach(b => b.classList.remove('selected'));
+      // Multi-select for channels
+      const channelButtons = document.querySelectorAll('#channel_group button');
+      const channelInput = document.getElementById('channel');
+      channelButtons.forEach(btn => {
+        btn.addEventListener('click', () => {
+          if (btn.dataset.value === 'All') {
+            const allSelected = [...channelButtons].slice(0, -1).every(b => b.classList.contains('selected'));
+            if (allSelected) {
+              channelButtons.forEach(b => b.classList.remove('selected'));
+            } else {
+              channelButtons.forEach(b => b.classList.add('selected'));
+            }
           } else {
-            channelButtons.forEach(b => b.classList.add('selected'));
+            btn.classList.toggle('selected');
           }
-        } else {
-          btn.classList.toggle('selected');
-        }
-        updateChannelInput();
-      });
-    });
-
-    function updateChannelInput() {
-      const selected = [...channelButtons]
-        .filter(b => b.classList.contains('selected') && b.dataset.value !== 'All')
-        .map(b => b.dataset.value);
-      channelInput.value = selected.join(', ');
-    }
-
-    // Form submission
-    document.getElementById('demoForm').addEventListener('submit', async function (e) {
-      e.preventDefault();
-      const form = e.target;
-      const formData = new FormData(form);
-      const payload = Object.fromEntries(formData.entries());
-
-      // Attach sessionId
-      payload.sessionId = sessionId;
-
-      const response = await fetch('/submit', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload)
+          updateChannelInput();
+        });
       });
 
-      // window.location.href = '/views/carousel.html';
-
-      if (response.ok) {
-        window.location.href = '/views/carousel.html';
-      } else {
-        alert('Something went wrong.');
+      function updateChannelInput() {
+        const selected = [...channelButtons]
+          .filter(b => b.classList.contains('selected') && b.dataset.value !== 'All')
+          .map(b => b.dataset.value);
+        channelInput.value = selected.join(', ');
       }
-    });
 
-    console.log('Session ID:', sessionId);
+      // Form submission
+      document.getElementById('demoForm').addEventListener('submit', async function (e) {
+        e.preventDefault();
+        const form = e.target;
+        const formData = new FormData(form);
+        const payload = Object.fromEntries(formData.entries());
+
+        // Attach sessionId
+        payload.sessionId = sessionId;
+
+        const response = await fetch('/submit', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+
+        // window.location.href = '/views/carousel.html';
+
+        if (response.ok) {
+          window.location.href = '/views/carousel.html';
+        } else {
+          alert('Something went wrong.');
+        }
+      });
+
+      // console.log('Session ID:', sessionId);
+    });
   </script>
 </body>
 </html>

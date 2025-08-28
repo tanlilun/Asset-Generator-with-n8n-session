@@ -450,6 +450,9 @@
 
         const slideFiles = ['slide1.html', 'slide2.html', 'slide3.html', 'slide4.html'];
 
+        let sessionId = sessionStorage.getItem('sessionId');
+        console.log('Retrieved sessionId in carousel:', sessionId);
+
         // State
         let currentSlide = 0;
         const totalSlides = slideFiles.length;
