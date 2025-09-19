@@ -3,6 +3,7 @@ const express = require('express');
 const fetch = require('node-fetch');
 const path = require('path');
 const dotenv = require('dotenv');
+const port = process.env.PORT || 3000;
 
 // Load environment variables
 dotenv.config();
@@ -124,7 +125,17 @@ app.use((err, req, res, next) => {
 
 
 // Start the server
-app.listen(PORT, () => {
-  console.log(`- Open ${Hosted_URL} in your browser`);
-  console.log(`- n8n Webhook URL: ${N8N_WEBHOOK_URL}`);
-});
+const listenOnPort = (port) => {
+  app.listen(port, () => {
+    console.log(`Server running on http://localhost:${port}`);
+  }).on('error', (err) => {
+    if (err.code === 'EADDRINUSE') {
+      console.log(`Port ${port} is in use, trying another port...`);
+      listenOnPort(port + 1);  // Try the next port (e.g., 3001, 3002, etc.)
+    } else {
+      console.error('Error starting server:', err);
+    }
+  });
+};
+
+listenOnPort(port);
